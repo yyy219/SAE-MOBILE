@@ -226,6 +226,15 @@
                 android:clickable="true"
                 android:focusable="true"/>
 
+            <ProgressBar
+                android:id="@+id/progressBarConnexion"
+                style="@android:style/Widget.ProgressBar.Small"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                android:layout_marginBottom="8dp"/>
+
             <Button
                 android:id="@+id/btnConnexion"
                 android:layout_width="match_parent"
