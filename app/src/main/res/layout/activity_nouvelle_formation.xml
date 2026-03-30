@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/background">
+
+    <RelativeLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:paddingTop="24dp"
+        android:background="@color/couleur_navy"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/background_fond_label"
+            android:backgroundTint="#2C4A6B"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_arrow_back_ios_24"
+            android:contentDescription="@string/retour"
+            app:tint="@color/blanc" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/nouvelle_formation"
+            android:textColor="@color/blanc"
+            android:textSize="@dimen/text_topbar"
+            android:textStyle="bold" />
+
+
+
+    </RelativeLayout>
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toBottomOf="@id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/layoutBottom">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margin_screen">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/radius_card"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/informations_g_n_rales"
+                        android:textColor="@color/text_secondaire"
+                        android:textSize="@dimen/text_label"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/titre_de_la_formation"
+                        android:layout_marginTop="16dp"
+                        android:textColor="@color/text_principal"
+                        android:textSize="@dimen/text_label" />
+
+                    <EditText
+                        android:id="@+id/etTitre"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/field_height"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/background_label_choisi"
+                        android:hint="@string/introduction_l_inclusion"
+                        android:paddingHorizontal="12dp"
+                        android:textSize="@dimen/text_body" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/description"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_principal"
+                        android:textSize="@dimen/text_label" />
+
+                    <EditText
+                        android:id="@+id/etDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="80dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/background_fond_label"
+                        android:gravity="top"
+                        android:hint="@string/comprendre_les_enjeux_de_l_inclusion_sociale_et_agir_au_quotidien"
+                        android:padding="12dp"
+                        android:textSize="@dimen/text_body" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/dur_e_minutes"
+                        android:layout_marginTop="12dp"
+                        android:textColor="@color/text_principal"
+                        android:textSize="@dimen/text_label" />
+
+                    <EditText
+                        android:id="@+id/etDuree"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/field_height"
+                        android:minHeight="48dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/background_fond_label"
+                        android:hint="@string/_45"
+                        android:inputType="number"
+                        android:paddingHorizontal="12dp"
+                        android:textSize="@dimen/text_body" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/radius_card"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/th_matique"
+                        android:textColor="@color/text_secondaire"
+                        android:textSize="@dimen/text_label"
+                        android:textStyle="bold" />
+
+                    <com.google.android.material.chip.ChipGroup
+                        android:id="@+id/chipGroupThematique"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        app:chipSpacingHorizontal="8dp"
+                        app:chipSpacingVertical="4dp"
+                        app:singleSelection="true"
+                        app:selectionRequired="false">
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipInclusion"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/inclusion"
+                            android:textColor="@color/chip_inclusion_text"
+                            app:chipBackgroundColor="@color/chip_inclusion_bg"
+                            app:chipStrokeWidth="2dp"
+                            app:chipStrokeColor="@color/chip_inclusion_text"
+                            app:checkedIconVisible="true"
+                            app:checkedIconTint="@color/chip_inclusion_text" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEnv"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/environnement"
+                            android:textColor="@color/chip_env_text"
+                            app:chipBackgroundColor="@color/chip_env_bg"
+                            app:chipStrokeWidth="2dp"
+                            app:chipStrokeColor="@color/chip_env_text"
+                            app:checkedIconVisible="true"
+                            app:checkedIconTint="@color/chip_env_text" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipEgalite"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/galit"
+                            android:textColor="@color/chip_egalite_text"
+                            app:chipBackgroundColor="@color/chip_egalite_bg"
+                            app:chipStrokeWidth="2dp"
+                            app:chipStrokeColor="@color/chip_egalite_text"
+                            app:checkedIconVisible="true"
+                            app:checkedIconTint="@color/chip_egalite_text" />
+
+                        <com.google.android.material.chip.Chip
+                            android:id="@+id/chipTolerance"
+                            style="@style/Widget.MaterialComponents.Chip.Choice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/tol_rance"
+                            android:textColor="@color/chip_tolerance_text"
+                            app:chipBackgroundColor="@color/chip_tolerance_bg"
+                            app:chipStrokeWidth="2dp"
+                            app:chipStrokeColor="@color/chip_tolerance_text"
+                            app:checkedIconVisible="true"
+                            app:checkedIconTint="@color/chip_tolerance_text" />
+
+                    </com.google.android.material.chip.ChipGroup>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="@dimen/radius_card"
+                android:layout_marginBottom="16dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/sessions_associ_es"
+                            android:textColor="@color/text_secondaire"
+                            android:textSize="@dimen/text_label"
+                            android:textStyle="bold" />
+
+
+                        <TextView
+                            android:id="@+id/tvNombreSessions"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="0 session"
+                            android:textColor="@color/text_secondaire"
+                            android:textSize="10sp" />
+
+                    </RelativeLayout>
+
+                    <!--  Container vide — les sessions s'ajoutent ici dynamiquement -->
+                    <LinearLayout
+                        android:id="@+id/layoutSessionsContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="4dp"/>
+
+                    <Button
+                        android:id="@+id/btnAddSession"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/button_height"
+                        android:layout_marginTop="16dp"
+                        android:background="@drawable/background_ajout_session"
+                        android:text="@string/ajouter_une_session"
+                        android:textAllCaps="false"
+                        android:textColor="@color/text_secondaire"
+                        android:textSize="@dimen/text_button" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bottom_bar_height"
+        android:background="@color/blanc"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/margin_screen"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_height"
+            android:backgroundTint="@color/vert"
+            android:text="@string/enregistrer_la_formation"
+            android:textColor="@color/blanc"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

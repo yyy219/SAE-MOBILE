@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <resources>
+        <item name="tvNbFormations" type="id"/>
+        <item name="tvNbBenevoles" type="id"/>
+        <item name="tvTauxReussite" type="id"/>
+        <item name="tvNbSessions" type="id"/>
+        <item name="tvPctInclusion" type="id"/>
+        <item name="tvPctEnvironnement" type="id"/>
+        <item name="tvPctEgalite" type="id"/>
+        <item name="pbInclusion" type="id"/>
+        <item name="pbEnvironnement" type="id"/>
+        <item name="pbEgalite" type="id"/>
+        <item name="tvTop1Titre" type="id"/>
+        <item name="tvTop1Nb" type="id"/>
+        <item name="tvTop2Titre" type="id"/>
+        <item name="tvTop2Nb" type="id"/>
+        <item name="btn7Jours" type="id"/>
+        <item name="btnCeMois" type="id"/>
+        <item name="btnAnnee" type="id"/>
+        <item name="tvLabelPeriode" type="id"/>
+        <item name="btnExporterPdf" type="id"/>
+    </resources>

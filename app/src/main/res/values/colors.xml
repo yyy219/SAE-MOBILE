@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="noir">#FF000000</color>
+    <color name="blanc">#FFFFFFFF</color>
+
+    <color name="couleur_navy">#1A3A5C</color>
+    <color name="bleu">#2E6DA4</color>
+    <color name="vert">#27AE60</color>
+    <color name="orange">#F39C12</color>
+    <color name="violet">#8E44AD</color>
+    <color name="rouge">#E74C3C</color>
+    <color name="period_bg">#F0F2F5</color>
+
+
+
+    <color name="background">#EEF2F7</color>
+    <color name="surface">#F5F7FA</color>
+
+    <color name="text_principal">#2C3E50</color>
+    <color name="text_secondaire">#7F8C8D</color>
+
+
+    <color name="green__type__ombre">#5927AE60</color>
+    <color name="navy__type_ombre">#591A3A5C</color>
+
+
+    <color name="chip_inclusion_bg">#EBF5FB</color>
+    <color name="chip_inclusion_text">#2E6DA4</color>
+    <color name="chip_env_bg">#E8F8F0</color>
+    <color name="chip_env_text">#27AE60</color>
+    <color name="chip_egalite_bg">#FEF9E7</color>
+    <color name="chip_egalite_text">#D4AC0D</color>
+    <color name="chip_tolerance_bg">#F9EBEA</color>
+    <color name="chip_tolerance_text">#E74C3C</color>
+
+
+
+</resources>

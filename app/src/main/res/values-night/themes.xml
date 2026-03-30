@@ -1,0 +1,17 @@
+<resources>
+    <style name="Base.Theme.SAE" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#1ECFB8</item>
+        <item name="colorOnPrimary">#060E1A</item>
+        <item name="colorSecondary">#3A80F0</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="colorSurface">#FFFFFF</item>
+        <item name="colorOnSurface">#111827</item>
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+        <item name="colorControlActivated">#1ECFB8</item>
+        <item name="colorControlHighlight">#1ECFB830</item>
+        <item name="colorControlNormal">#6B7280</item>
+        <item name="android:colorEdgeEffect">#1ECFB8</item>
+        <item name="materialButtonStyle">@style/OpenMinds.Button</item>
+    </style>
+</resources>

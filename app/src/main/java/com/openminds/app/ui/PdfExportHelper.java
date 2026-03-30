@@ -1,0 +1,175 @@
+package com.openminds.app.ui;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
+import androidx.core.content.FileProvider;
+import com.openminds.app.database.entity.FormationTop;
+import com.openminds.app.database.entity.StatThematique;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class PdfExportHelper {
+
+    // Données à passer au générateur
+    public static class StatsSnapshot {
+        public int nbFormations;
+        public int nbBenevoles;
+        public int nbSessions;
+        public int tauxReussite;
+        public String labelPeriode;
+        public List<StatThematique> thematiques;
+        public List<FormationTop> topFormations;
+    }
+
+    public static void exporterEtPartager(Context context, StatsSnapshot stats) {
+        PdfDocument document = new PdfDocument();
+        PdfDocument.PageInfo pageInfo =
+                new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.Page page = document.startPage(pageInfo);
+        Canvas canvas = page.getCanvas();
+
+        dessinerPdf(canvas, stats);
+
+        document.finishPage(page);
+
+        // Sauvegarde dans le dossier de l'app
+        File fichier = new File(context.getExternalFilesDir(null),
+                "rapport_openminds.pdf");
+        try {
+            document.writeTo(new FileOutputStream(fichier));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        } finally {
+            document.close();
+        }
+
+        // Partage via FileProvider (Android 7+)
+        Uri uri = FileProvider.getUriForFile(
+                context,
+                context.getPackageName() + ".provider",
+                fichier);
+
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(uri, "application/pdf");
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        context.startActivity(Intent.createChooser(intent, "Ouvrir le rapport PDF"));
+    }
+
+    private static void dessinerPdf(Canvas canvas, StatsSnapshot s) {
+        Paint titreP  = new Paint();
+        Paint corpsP  = new Paint();
+        Paint kpiP    = new Paint();
+        Paint lineP   = new Paint();
+
+        titreP.setColor(Color.parseColor("#1A2F4A"));
+        titreP.setTextSize(22f);
+        titreP.setFakeBoldText(true);
+
+        corpsP.setColor(Color.parseColor("#333333"));
+        corpsP.setTextSize(13f);
+
+        kpiP.setColor(Color.parseColor("#2C4A8A"));
+        kpiP.setTextSize(18f);
+        kpiP.setFakeBoldText(true);
+
+        lineP.setColor(Color.parseColor("#CCCCCC"));
+        lineP.setStrokeWidth(1f);
+
+        int x = 40;
+        int y = 60;
+
+        // ── En-tête ───────────────────────────────────────────────
+        canvas.drawText("OpenMinds — Rapport Statistiques", x, y, titreP);
+        y += 20;
+        canvas.drawLine(x, y, 555, y, lineP);
+        y += 20;
+
+        String date = new SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+                .format(new Date());
+        canvas.drawText("Généré le " + date + "  |  " + s.labelPeriode, x, y, corpsP);
+        y += 30;
+        canvas.drawLine(x, y, 555, y, lineP);
+        y += 30;
+
+        // ── KPI Cards ─────────────────────────────────────────────
+        canvas.drawText("Indicateurs clés", x, y, titreP);
+        y += 25;
+
+        dessinerKpi(canvas, x,      y, "Formations",        String.valueOf(s.nbFormations),  kpiP, corpsP);
+        dessinerKpi(canvas, x + 130, y, "Bénévoles actifs", String.valueOf(s.nbBenevoles),   kpiP, corpsP);
+        dessinerKpi(canvas, x + 270, y, "Taux de réussite", s.tauxReussite + "%",            kpiP, corpsP);
+        dessinerKpi(canvas, x + 400, y, "Sessions",         String.valueOf(s.nbSessions),    kpiP, corpsP);
+        y += 60;
+        canvas.drawLine(x, y, 555, y, lineP);
+        y += 25;
+
+        // ── Participation par thématique ──────────────────────────
+        canvas.drawText("Participation par thématique", x, y, titreP);
+        y += 25;
+
+        if (s.thematiques != null) {
+            int maxInscrits = 0;
+            for (StatThematique t : s.thematiques)
+                if (t.getNbInscrits() > maxInscrits) maxInscrits = t.getNbInscrits();
+
+            for (StatThematique t : s.thematiques) {
+                int pct = maxInscrits > 0 ? (t.getNbInscrits() * 100 / maxInscrits) : 0;
+                canvas.drawText(t.getThematique(), x, y, corpsP);
+
+                // Barre de progression
+                Paint barBg = new Paint();
+                barBg.setColor(Color.parseColor("#E8EDF5"));
+                canvas.drawRect(x + 120, y - 12, x + 400, y, barBg);
+
+                Paint barFg = new Paint();
+                barFg.setColor(Color.parseColor("#2C4A8A"));
+                canvas.drawRect(x + 120, y - 12, x + 120 + (280 * pct / 100), y, barFg);
+
+                canvas.drawText(pct + "%", x + 410, y, corpsP);
+                y += 22;
+            }
+        }
+        y += 10;
+        canvas.drawLine(x, y, 555, y, lineP);
+        y += 25;
+
+        // ── Top formations ────────────────────────────────────────
+        canvas.drawText("Formations les plus suivies", x, y, titreP);
+        y += 25;
+
+        if (s.topFormations != null) {
+            int rang = 1;
+            for (FormationTop f : s.topFormations) {
+                canvas.drawText(rang + ".  " + f.getTitre(), x, y, corpsP);
+                canvas.drawText(f.getNbInscrits() + " inscrits", 430, y, corpsP);
+                y += 20;
+                rang++;
+            }
+        }
+
+        y += 20;
+        canvas.drawLine(x, y, 555, y, lineP);
+        y += 20;
+        corpsP.setColor(Color.parseColor("#888888"));
+        corpsP.setTextSize(10f);
+        canvas.drawText("Document généré automatiquement par OpenMinds", x, y, corpsP);
+    }
+
+    private static void dessinerKpi(Canvas canvas, int x, int y,
+                                    String label, String valeur,
+                                    Paint kpiP, Paint corpsP) {
+        canvas.drawText(valeur, x, y + 20, kpiP);
+        canvas.drawText(label,  x, y + 35, corpsP);
+    }
+}

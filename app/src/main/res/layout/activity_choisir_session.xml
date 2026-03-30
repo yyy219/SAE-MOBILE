@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F5F5">
+
+    <!-- HEADER avec paddingTop pour pas être derrière la caméra -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#1A2B4A"
+        android:gravity="center_vertical"
+        android:paddingTop="40dp"
+        android:paddingBottom="12dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:background="@drawable/background_fond_label"
+            android:backgroundTint="#2C4A6B"
+            android:padding="8dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/baseline_arrow_back_ios_24"
+            android:contentDescription="@string/retour"
+            app:tint="@color/blanc" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Choisir une session"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center" />
+
+        <ImageButton
+            android:id="@+id/btnMenu"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_more"
+            android:tint="#FFFFFF"
+            android:contentDescription="Menu" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FORMATION SÉLECTIONNÉE"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="20dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:id="@+id/tvThematiqueFormation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FORMATION"
+                        android:textColor="#6C63FF"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/tvTitreFormation"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Titre de la formation"
+                        android:textColor="#1A2B4A"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SESSIONS DISPONIBLES"
+                android:textSize="11sp"
+                android:textColor="#888888"
+                android:textStyle="bold"
+                android:layout_marginBottom="6dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSessions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:nestedScrollingEnabled="false" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="16dp"
+        android:elevation="8dp">
+
+        <Button
+            android:id="@+id/btnSinscrire"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="S'inscrire à cette session"
+            android:backgroundTint="#2ECC71"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:enabled="false"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tvAnnuler"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Annuler"
+            android:gravity="center"
+            android:textColor="#888888"
+            android:textSize="14sp"
+            android:padding="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

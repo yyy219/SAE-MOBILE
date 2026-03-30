@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Type de session"
+            android:textStyle="bold"
+            android:textColor="@color/couleur_navy"
+            android:textSize="14sp"/>
+
+
+        <RadioGroup
+            android:id="@+id/rgTypeSession"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <RadioButton
+                android:id="@+id/rbEnLigne"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="💻 En ligne"
+                android:checked="true"/>
+
+            <RadioButton
+                android:id="@+id/rbPresentielle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="📍 Présentielle"
+                android:layout_marginStart="16dp"/>
+
+        </RadioGroup>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date de début"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/text_principal"/>
+
+        <EditText
+            android:id="@+id/etDateDebut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="ex: 15/04/2026 09h00"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Date de fin"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_principal"/>
+
+        <EditText
+            android:id="@+id/etDateFin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="ex: 15/04/2026 10h00"/>
+
+        <!-- Lieu caché par défaut, visible si Présentielle -->
+        <TextView
+            android:id="@+id/tvLieuLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lieu"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_principal"
+            android:visibility="gone"/>
+
+        <EditText
+            android:id="@+id/etLieu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="ex: Salle B, 12 rue de Paris"
+            android:visibility="gone"/>
+
+        <!-- Lien online visible par défaut, caché si Présentielle -->
+        <TextView
+            android:id="@+id/tvLienLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Lien de réunion"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_principal"/>
+
+        <EditText
+            android:id="@+id/etLienOnline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="ex: https://meet.google.com/..."/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nombre de places"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/text_principal"/>
+
+        <EditText
+            android:id="@+id/etPlacesMax"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="48dp"
+            android:hint="ex: 20"
+            android:inputType="number"/>
+
+    </LinearLayout>
+</ScrollView>

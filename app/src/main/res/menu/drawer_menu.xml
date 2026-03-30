@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_formations"
+        android:title="Catalogue des Formations" />
+    <item
+        android:id="@+id/nav_profil"
+        android:title="Mon Profil (US01)" />
+    <item
+        android:id="@+id/nav_progression"
+        android:title="Ma Progression (US08)" />
+</menu>

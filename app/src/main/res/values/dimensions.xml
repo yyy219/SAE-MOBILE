@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="margin_screen">16dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">12dp</dimen>
+
+    <!-- Coins arrondis -->
+    <dimen name="radius_card">16dp</dimen>
+    <dimen name="radius_button">12dp</dimen>
+    <dimen name="radius_chip">20dp</dimen>
+    <dimen name="radius_field">10dp</dimen>
+    <dimen name="radius_session">12dp</dimen>
+
+    <!-- Hauteurs -->
+    <dimen name="topbar_height">60dp</dimen>
+    <dimen name="statusbar_height">44dp</dimen>
+    <dimen name="button_height">48dp</dimen>
+    <dimen name="field_height">48dp</dimen>
+    <dimen name="chip_height">32dp</dimen>
+    <dimen name="session_height">60dp</dimen>
+    <dimen name="bottom_bar_height">72dp</dimen>
+
+    <!-- Tailles de texte -->
+    <dimen name="text_card_title">11sp</dimen>
+    <dimen name="text_label">12sp</dimen>
+    <dimen name="text_body">14sp</dimen>
+    <dimen name="text_topbar">17sp</dimen>
+    <dimen name="text_button">15sp</dimen>
+    <dimen name="text_stat_number">32sp</dimen>
+    <dimen name="text_stat_label">11sp</dimen>
+    <dimen name="text_progress">13sp</dimen>
+</resources>
