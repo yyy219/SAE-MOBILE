@@ -39,7 +39,6 @@ public class MonEspaceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mon_espace);
 
-        // Bind
         tvNomPrenom     = findViewById(R.id.tvNomPrenom);
         tvAvatar        = findViewById(R.id.tvAvatar);
         tvRole          = findViewById(R.id.tvRole);
@@ -52,12 +51,10 @@ public class MonEspaceActivity extends AppCompatActivity {
         sectionAdmin    = findViewById(R.id.sectionAdmin);
         sectionBenevole = findViewById(R.id.sectionBenevole);
 
-        // ViewModels
         utilisateurViewModel  = new ViewModelProvider(this).get(UtilisateurViewModel.class);
         statistiquesViewModel = new ViewModelProvider(this).get(StatistiquesViewModel.class);
         formationViewModel    = new ViewModelProvider(this).get(FormationViewModel.class);
 
-        // Session
         SharedPreferences prefs = getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE);
         int userId = prefs.getInt("connected_user_id", -1);
 
@@ -67,11 +64,9 @@ public class MonEspaceActivity extends AppCompatActivity {
             return;
         }
 
-        // Charger utilisateur
         utilisateurViewModel.getUtilisateurById(userId).observe(this, utilisateur -> {
             if (utilisateur == null) return;
 
-            // Nom + initiales
             String nomComplet = utilisateur.getPrenom() + " " + utilisateur.getNom();
             tvNomPrenom.setText(nomComplet);
 
@@ -85,22 +80,24 @@ public class MonEspaceActivity extends AppCompatActivity {
             String role = utilisateur.getRole();
 
             if ("admin".equals(role)) {
-                // Admin → redirige directement vers le dashboard admin (MainActivity)
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
             } else {
                 tvRole.setText("Bénévole · OpenMinds");
+
+                // Cacher les boutons jaunes pour les bénévoles
+                if (btnRetour != null)     btnRetour.setVisibility(View.GONE);
+                if (btnParametres != null) btnParametres.setVisibility(View.GONE);
+
                 if (sectionAdmin != null)    sectionAdmin.setVisibility(View.GONE);
                 if (sectionBenevole != null) sectionBenevole.setVisibility(View.VISIBLE);
                 chargerStatsBenevole(userId);
             }
         });
 
-        // Boutons
         if (btnRetour != null)     btnRetour.setOnClickListener(v -> finish());
         if (btnParametres != null) btnParametres.setOnClickListener(v -> deconnexion(prefs));
 
-        // Navbar
         View navAccueil   = findViewById(R.id.navAccueil);
         View navCatalogue = findViewById(R.id.navCatalogue);
         if (navAccueil != null)
@@ -108,8 +105,6 @@ public class MonEspaceActivity extends AppCompatActivity {
         if (navCatalogue != null)
             navCatalogue.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
     }
-
-    // ─── ADMIN ───────────────────────────────────────────────────────────────
 
     private void chargerStatsAdmin() {
         statistiquesViewModel.nbFormations.observe(this, nb -> {
@@ -125,9 +120,9 @@ public class MonEspaceActivity extends AppCompatActivity {
             tvTauxReussite.setText(taux != null ? Math.round(taux) + "%" : "—");
         });
 
-        View btnCreer   = findViewById(R.id.btnAdminCreerFormation);
-        View btnStats   = findViewById(R.id.btnAdminStatistiques);
-        View btnSess    = findViewById(R.id.btnAdminSessions);
+        View btnCreer     = findViewById(R.id.btnAdminCreerFormation);
+        View btnStats     = findViewById(R.id.btnAdminStatistiques);
+        View btnSess      = findViewById(R.id.btnAdminSessions);
         View btnDecoAdmin = findViewById(R.id.btnDeconnexionAdmin);
 
         if (btnCreer != null)
@@ -141,14 +136,10 @@ public class MonEspaceActivity extends AppCompatActivity {
                     getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
     }
 
-    // ─── BÉNÉVOLE ─────────────────────────────────────────────────────────────
-
     private void chargerStatsBenevole(int userId) {
-        // Observer inscriptions → stats + cartes
         utilisateurViewModel.getMesInscriptions(userId).observe(this, inscriptions -> {
             if (inscriptions == null) return;
 
-            // Compteurs
             if (tvNbFormations != null)
                 tvNbFormations.setText(String.valueOf(inscriptions.size()));
 
@@ -163,14 +154,10 @@ public class MonEspaceActivity extends AppCompatActivity {
             if (tvTauxReussite != null)
                 tvTauxReussite.setText(Math.round(moyenne) + "%");
 
-            // Niveau dynamique selon nb formations terminées
             calculerNiveau((int) badges);
-
-            // Cartes formations dynamiques
             afficherFormationsEnCours(inscriptions);
         });
 
-        // Boutons bénévole
         View btnCatalogue = findViewById(R.id.btnBenevoleVoirCatalogue);
         View btnSession   = findViewById(R.id.btnBenevoleChoisirSession);
         View btnDecoBenv  = findViewById(R.id.btnDeconnexionBenevole);
@@ -178,19 +165,16 @@ public class MonEspaceActivity extends AppCompatActivity {
         if (btnCatalogue != null)
             btnCatalogue.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
         if (btnSession != null)
-            btnSession.setOnClickListener(v -> startActivity(new Intent(this, ChoisirSessionActivity.class)));
+            btnSession.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
         if (btnDecoBenv != null)
             btnDecoBenv.setOnClickListener(v -> deconnexion(
                     getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
 
-        // --- INTÉGRATION US07 : OUVRIR LA PAGE MES BADGES ---
         LinearLayout btnOuvrirBadges = findViewById(R.id.btnOuvrirBadges);
         if (btnOuvrirBadges != null) {
-            btnOuvrirBadges.setOnClickListener(v -> {
-                startActivity(new Intent(this, MesBadgesActivity.class));
-            });
+            btnOuvrirBadges.setOnClickListener(v ->
+                    startActivity(new Intent(this, MesBadgesActivity.class)));
         }
-        // -----------------------------------------------------
     }
 
     private void calculerNiveau(int nbBadges) {
@@ -202,59 +186,39 @@ public class MonEspaceActivity extends AppCompatActivity {
     }
 
     private void afficherFormationsEnCours(List<Inscription> inscriptions) {
-        // Observer toutes les formations pour croiser avec les inscriptions
         formationViewModel.toutesLesFormations.observe(this, formations -> {
             if (formations == null || inscriptions.isEmpty()) return;
 
-            // Carte 1
             if (inscriptions.size() >= 1) {
-                Inscription i1 = inscriptions.get(0);
-                afficherCarte(
-                        formations, i1,
-                        R.id.tvTitreFormation1,
-                        R.id.tvSousInfoFormation1,
-                        R.id.progressFormation1,
-                        R.id.tvPct1
-                );
+                afficherCarte(formations, inscriptions.get(0),
+                        R.id.tvTitreFormation1, R.id.tvSousInfoFormation1,
+                        R.id.progressFormation1, R.id.tvPct1);
             }
-
-            // Carte 2
             if (inscriptions.size() >= 2) {
-                Inscription i2 = inscriptions.get(1);
-                afficherCarte(
-                        formations, i2,
-                        R.id.tvTitreFormation2,
-                        R.id.tvSousInfoFormation2,
-                        R.id.progressFormation2,
-                        R.id.tvPct2
-                );
+                afficherCarte(formations, inscriptions.get(1),
+                        R.id.tvTitreFormation2, R.id.tvSousInfoFormation2,
+                        R.id.progressFormation2, R.id.tvPct2);
             }
         });
     }
 
     private void afficherCarte(List<Formation> formations, Inscription inscription,
                                int idTitre, int idSousInfo, int idProgress, int idPct) {
-        // Trouver la formation correspondant à l'inscription via sessionId
-        // (on cherche dans les formations disponibles)
         TextView tvTitre    = findViewById(idTitre);
         TextView tvSousInfo = findViewById(idSousInfo);
         ProgressBar pb      = findViewById(idProgress);
         TextView tvPct      = findViewById(idPct);
 
         int pct = inscription.getProgressionPourcentage();
-        if (pb != null)     pb.setProgress(pct);
-        if (tvPct != null)  tvPct.setText(pct + "%");
+        if (pb != null)    pb.setProgress(pct);
+        if (tvPct != null) tvPct.setText(pct + "%");
 
-        // Si on trouve une formation dans la liste, on affiche son titre
-        // Sinon on affiche un label générique
         if (!formations.isEmpty()) {
-            Formation f = formations.get(0); // best effort — sera amélioré avec jointure
+            Formation f = formations.get(0);
             if (tvTitre != null)    tvTitre.setText(f.getTitre());
             if (tvSousInfo != null) tvSousInfo.setText(f.getThematique() + " · " + f.getDureeMinutes() + " min");
         }
     }
-
-    // ─── DÉCONNEXION ──────────────────────────────────────────────────────────
 
     private void deconnexion(SharedPreferences prefs) {
         prefs.edit().clear().apply();
