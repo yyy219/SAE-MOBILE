@@ -36,6 +36,10 @@ public class FormationViewModel extends AndroidViewModel {
     public void modifierFormation(Formation f)   { repository.update(f); }
     public void supprimerFormation(Formation f)  { repository.delete(f); }
 
+    public LiveData<List<Formation>> getFormationsInscrites(int userId) {
+        return repository.getFormationsInscrites(userId);
+    }
+
     public LiveData<Formation> getFormationById(int id) {
         return repository.getFormationById(id);
     }

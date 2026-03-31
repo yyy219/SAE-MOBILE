@@ -3,9 +3,9 @@ package com.openminds.app.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,12 +27,14 @@ public class MonEspaceActivity extends AppCompatActivity {
 
     private TextView tvNomPrenom, tvAvatar, tvRole, tvNiveau;
     private TextView tvNbFormations, tvNbBadges, tvTauxReussite;
-    private ImageView btnRetour, btnParametres;
     private LinearLayout sectionAdmin, sectionBenevole;
+    private LinearLayout conteneurFormations;
 
     private UtilisateurViewModel utilisateurViewModel;
     private StatistiquesViewModel statistiquesViewModel;
     private FormationViewModel formationViewModel;
+
+    private int currentUserId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,6 @@ public class MonEspaceActivity extends AppCompatActivity {
         tvNbFormations  = findViewById(R.id.tvNbFormations);
         tvNbBadges      = findViewById(R.id.tvNbBadges);
         tvTauxReussite  = findViewById(R.id.tvTauxReussite);
-        btnRetour       = findViewById(R.id.btnRetour);
-        btnParametres   = findViewById(R.id.btnParametres);
         sectionAdmin    = findViewById(R.id.sectionAdmin);
         sectionBenevole = findViewById(R.id.sectionBenevole);
 
@@ -56,15 +56,15 @@ public class MonEspaceActivity extends AppCompatActivity {
         formationViewModel    = new ViewModelProvider(this).get(FormationViewModel.class);
 
         SharedPreferences prefs = getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE);
-        int userId = prefs.getInt("connected_user_id", -1);
+        currentUserId = prefs.getInt("connected_user_id", -1);
 
-        if (userId == -1) {
+        if (currentUserId == -1) {
             startActivity(new Intent(this, ConnexionActivity.class));
             finish();
             return;
         }
 
-        utilisateurViewModel.getUtilisateurById(userId).observe(this, utilisateur -> {
+        utilisateurViewModel.getUtilisateurById(currentUserId).observe(this, utilisateur -> {
             if (utilisateur == null) return;
 
             String nomComplet = utilisateur.getPrenom() + " " + utilisateur.getNom();
@@ -84,27 +84,36 @@ public class MonEspaceActivity extends AppCompatActivity {
                 finish();
             } else {
                 tvRole.setText("Bénévole · OpenMinds");
-
-                // Cacher les boutons jaunes pour les bénévoles
-                if (btnRetour != null)     btnRetour.setVisibility(View.GONE);
-                if (btnParametres != null) btnParametres.setVisibility(View.GONE);
-
                 if (sectionAdmin != null)    sectionAdmin.setVisibility(View.GONE);
                 if (sectionBenevole != null) sectionBenevole.setVisibility(View.VISIBLE);
-                chargerStatsBenevole(userId);
+                chargerDonneesBenevole(prefs);
             }
         });
 
-        if (btnRetour != null)     btnRetour.setOnClickListener(v -> finish());
-        if (btnParametres != null) btnParametres.setOnClickListener(v -> deconnexion(prefs));
 
-        View navAccueil   = findViewById(R.id.navAccueil);
+        // Navbar 3 onglets bénévole
         View navCatalogue = findViewById(R.id.navCatalogue);
-        if (navAccueil != null)
-            navAccueil.setOnClickListener(v -> startActivity(new Intent(this, MainActivity.class)));
+        View navBadges    = findViewById(R.id.navBadges);
+
         if (navCatalogue != null)
-            navCatalogue.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
+            navCatalogue.setOnClickListener(v ->
+                    startActivity(new Intent(this, CatalogueFormationsActivity.class)));
+
+        if (navBadges != null)
+            navBadges.setOnClickListener(v ->
+                    Toast.makeText(this, "Badges disponibles bientôt", Toast.LENGTH_SHORT).show());
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Rafraîchit les données à chaque retour sur la page
+        if (currentUserId != -1 && conteneurFormations != null) {
+            conteneurFormations.removeAllViews();
+        }
+    }
+
+    // ─── STATS ADMIN ─────────────────────────────────────────────────────────
 
     private void chargerStatsAdmin() {
         statistiquesViewModel.nbFormations.observe(this, nb -> {
@@ -120,10 +129,10 @@ public class MonEspaceActivity extends AppCompatActivity {
             tvTauxReussite.setText(taux != null ? Math.round(taux) + "%" : "—");
         });
 
-        View btnCreer     = findViewById(R.id.btnAdminCreerFormation);
-        View btnStats     = findViewById(R.id.btnAdminStatistiques);
-        View btnSess      = findViewById(R.id.btnAdminSessions);
-        View btnDecoAdmin = findViewById(R.id.btnDeconnexionAdmin);
+        View btnCreer    = findViewById(R.id.btnAdminCreerFormation);
+        View btnStats    = findViewById(R.id.btnAdminStatistiques);
+        View btnSess     = findViewById(R.id.btnAdminSessions);
+        View btnDecoAdmin= findViewById(R.id.btnDeconnexionAdmin);
 
         if (btnCreer != null)
             btnCreer.setOnClickListener(v -> startActivity(new Intent(this, NouvelleFormationActivity.class)));
@@ -136,88 +145,230 @@ public class MonEspaceActivity extends AppCompatActivity {
                     getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
     }
 
-    private void chargerStatsBenevole(int userId) {
-        utilisateurViewModel.getMesInscriptions(userId).observe(this, inscriptions -> {
+    // ─── DONNÉES BÉNÉVOLE ─────────────────────────────────────────────────────
+
+    private void chargerDonneesBenevole(SharedPreferences prefs) {
+
+        // 1. Stats vue d'ensemble depuis les inscriptions
+        utilisateurViewModel.getMesInscriptions(currentUserId).observe(this, inscriptions -> {
             if (inscriptions == null) return;
 
-            if (tvNbFormations != null)
-                tvNbFormations.setText(String.valueOf(inscriptions.size()));
-
-            long badges = inscriptions.stream()
+            int nbFormations = inscriptions.size();
+            long nbBadges    = inscriptions.stream()
                     .filter(i -> i.getProgressionPourcentage() >= 100).count();
-            if (tvNbBadges != null)
-                tvNbBadges.setText(String.valueOf(badges));
-
-            double moyenne = inscriptions.stream()
+            double moyenne   = inscriptions.stream()
                     .mapToInt(Inscription::getProgressionPourcentage)
                     .average().orElse(0);
-            if (tvTauxReussite != null)
-                tvTauxReussite.setText(Math.round(moyenne) + "%");
 
-            calculerNiveau((int) badges);
-            afficherFormationsEnCours(inscriptions);
+            if (tvNbFormations != null) tvNbFormations.setText(String.valueOf(nbFormations));
+            if (tvNbBadges     != null) tvNbBadges.setText(String.valueOf(nbBadges));
+            if (tvTauxReussite != null) tvTauxReussite.setText(Math.round(moyenne) + "%");
+
+            if (tvNiveau != null) {
+                if      (nbBadges == 0) tvNiveau.setText("Niveau 1");
+                else if (nbBadges <= 2) tvNiveau.setText("Niveau 2");
+                else if (nbBadges <= 5) tvNiveau.setText("Niveau 3");
+                else                    tvNiveau.setText("Niveau 4");
+            }
         });
 
+        // 2. Formations en cours — depuis la jointure BD (réelles)
+        formationViewModel.getFormationsInscrites(currentUserId).observe(this, formations -> {
+
+            // Récupérer le conteneur dynamique
+            conteneurFormations = findViewById(R.id.conteneurFormationsBenevole);
+            if (conteneurFormations == null) return;
+            conteneurFormations.removeAllViews();
+
+            TextView tvAucune = findViewById(R.id.tvAucuneFormation);
+
+            if (formations == null || formations.isEmpty()) {
+                // Aucune inscription → message
+                if (tvAucune != null) tvAucune.setVisibility(View.VISIBLE);
+                return;
+            }
+            if (tvAucune != null) tvAucune.setVisibility(View.GONE);
+
+            // Croiser avec les inscriptions pour avoir la progression
+            utilisateurViewModel.getMesInscriptions(currentUserId).observe(this, inscriptions -> {
+                if (inscriptions == null) return;
+                conteneurFormations.removeAllViews();
+
+                int max = Math.min(formations.size(), 3);
+                for (int i = 0; i < max; i++) {
+                    Formation f = formations.get(i);
+                    int progression = 0;
+                    if (i < inscriptions.size())
+                        progression = inscriptions.get(i).getProgressionPourcentage();
+                    ajouterCarteFormation(f, progression);
+                }
+
+                // Badges dynamiques sous les formations
+                afficherBadgesDynamiques(formations, inscriptions);
+            });
+        });
+
+        // 3. Boutons
         View btnCatalogue = findViewById(R.id.btnBenevoleVoirCatalogue);
         View btnSession   = findViewById(R.id.btnBenevoleChoisirSession);
         View btnDecoBenv  = findViewById(R.id.btnDeconnexionBenevole);
 
         if (btnCatalogue != null)
-            btnCatalogue.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
+            btnCatalogue.setOnClickListener(v ->
+                    startActivity(new Intent(this, CatalogueFormationsActivity.class)));
         if (btnSession != null)
-            btnSession.setOnClickListener(v -> startActivity(new Intent(this, CatalogueFormationsActivity.class)));
+            btnSession.setOnClickListener(v ->
+                    startActivity(new Intent(this, CatalogueFormationsActivity.class)));
         if (btnDecoBenv != null)
-            btnDecoBenv.setOnClickListener(v -> deconnexion(
-                    getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
-
-        LinearLayout btnOuvrirBadges = findViewById(R.id.btnOuvrirBadges);
-        if (btnOuvrirBadges != null) {
-            btnOuvrirBadges.setOnClickListener(v ->
-                    startActivity(new Intent(this, MesBadgesActivity.class)));
-        }
+            btnDecoBenv.setOnClickListener(v -> deconnexion(prefs));
     }
 
-    private void calculerNiveau(int nbBadges) {
-        if (tvNiveau == null) return;
-        if (nbBadges == 0)      tvNiveau.setText("Niveau 1");
-        else if (nbBadges <= 2) tvNiveau.setText("Niveau 2");
-        else if (nbBadges <= 5) tvNiveau.setText("Niveau 3");
-        else                    tvNiveau.setText("Niveau 4");
+    // ─── CARTE FORMATION DYNAMIQUE ────────────────────────────────────────────
+
+    private void ajouterCarteFormation(Formation f, int progression) {
+        LinearLayout carte = new LinearLayout(this);
+        carte.setOrientation(LinearLayout.VERTICAL);
+        carte.setPadding(dp(14), dp(12), dp(14), dp(12));
+        carte.setBackgroundResource(R.drawable.bg_surface_card_light);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        lp.bottomMargin = dp(8);
+        carte.setLayoutParams(lp);
+
+        // Chip thématique
+        TextView chip = new TextView(this);
+        chip.setText(capitaliser(f.getThematique()));
+        chip.setTextSize(10f);
+        chip.setPadding(dp(8), dp(3), dp(8), dp(3));
+        chip.setBackgroundResource(R.drawable.bg_chip_env_light);
+        chip.setTextColor(Color.parseColor("#0A7A6E"));
+        LinearLayout.LayoutParams chipLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        chipLp.bottomMargin = dp(8);
+        chip.setLayoutParams(chipLp);
+        carte.addView(chip);
+
+        // Ligne titre + %
+        LinearLayout ligne = new LinearLayout(this);
+        ligne.setOrientation(LinearLayout.HORIZONTAL);
+        ligne.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams ligneLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        ligneLp.bottomMargin = dp(8);
+        ligne.setLayoutParams(ligneLp);
+
+        LinearLayout col = new LinearLayout(this);
+        col.setOrientation(LinearLayout.VERTICAL);
+        col.setLayoutParams(new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1f));
+
+        TextView tvTitre = new TextView(this);
+        tvTitre.setText(f.getTitre());
+        tvTitre.setTextSize(13f);
+        tvTitre.setTypeface(null, android.graphics.Typeface.BOLD);
+        tvTitre.setTextColor(Color.parseColor("#111827"));
+        col.addView(tvTitre);
+
+        TextView tvSous = new TextView(this);
+        tvSous.setText(capitaliser(f.getThematique()) + " · " + f.getDureeMinutes() + " min");
+        tvSous.setTextSize(11f);
+        tvSous.setTextColor(Color.parseColor("#6B7280"));
+        col.addView(tvSous);
+
+        ligne.addView(col);
+
+        TextView tvPct = new TextView(this);
+        tvPct.setText(progression + "%");
+        tvPct.setTextSize(13f);
+        tvPct.setTypeface(null, android.graphics.Typeface.BOLD);
+        tvPct.setTextColor(Color.parseColor("#0AAEA0"));
+        LinearLayout.LayoutParams pctLp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        pctLp.setMarginStart(dp(10));
+        tvPct.setLayoutParams(pctLp);
+        ligne.addView(tvPct);
+        carte.addView(ligne);
+
+        // ProgressBar
+        ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
+        pb.setMax(100);
+        pb.setProgress(progression);
+        pb.setBackgroundResource(R.drawable.bg_progress_track_light);
+        pb.setProgressDrawable(getResources().getDrawable(R.drawable.bg_progress_fill, null));
+        pb.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, dp(4)));
+        carte.addView(pb);
+
+        conteneurFormations.addView(carte);
     }
 
-    private void afficherFormationsEnCours(List<Inscription> inscriptions) {
-        formationViewModel.toutesLesFormations.observe(this, formations -> {
-            if (formations == null || inscriptions.isEmpty()) return;
+    // ─── BADGES DYNAMIQUES ────────────────────────────────────────────────────
 
-            if (inscriptions.size() >= 1) {
-                afficherCarte(formations, inscriptions.get(0),
-                        R.id.tvTitreFormation1, R.id.tvSousInfoFormation1,
-                        R.id.progressFormation1, R.id.tvPct1);
+    private void afficherBadgesDynamiques(List<Formation> formations, List<Inscription> inscriptions) {
+        LinearLayout conteneurBadges = findViewById(R.id.conteneurBadgesBenevole);
+        LinearLayout sectionBadges  = findViewById(R.id.sectionBadgesBenevole);
+        if (conteneurBadges == null || sectionBadges == null) return;
+
+        conteneurBadges.removeAllViews();
+        boolean auMoinsUnBadge = false;
+
+        for (int i = 0; i < formations.size(); i++) {
+            int progression = i < inscriptions.size()
+                    ? inscriptions.get(i).getProgressionPourcentage() : 0;
+            if (progression >= 100) {
+                auMoinsUnBadge = true;
+                ajouterBadge(conteneurBadges, formations.get(i).getTitre());
             }
-            if (inscriptions.size() >= 2) {
-                afficherCarte(formations, inscriptions.get(1),
-                        R.id.tvTitreFormation2, R.id.tvSousInfoFormation2,
-                        R.id.progressFormation2, R.id.tvPct2);
-            }
-        });
+        }
+
+        sectionBadges.setVisibility(auMoinsUnBadge ? View.VISIBLE : View.GONE);
     }
 
-    private void afficherCarte(List<Formation> formations, Inscription inscription,
-                               int idTitre, int idSousInfo, int idProgress, int idPct) {
-        TextView tvTitre    = findViewById(idTitre);
-        TextView tvSousInfo = findViewById(idSousInfo);
-        ProgressBar pb      = findViewById(idProgress);
-        TextView tvPct      = findViewById(idPct);
+    private void ajouterBadge(LinearLayout conteneur, String titre) {
+        LinearLayout badge = new LinearLayout(this);
+        badge.setOrientation(LinearLayout.VERTICAL);
+        badge.setGravity(android.view.Gravity.CENTER);
+        badge.setPadding(dp(10), dp(10), dp(10), dp(10));
+        badge.setBackgroundResource(R.drawable.bg_surface_card_light);
+        LinearLayout.LayoutParams bp = new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, 1f);
+        bp.setMarginEnd(dp(4));
+        badge.setLayoutParams(bp);
 
-        int pct = inscription.getProgressionPourcentage();
-        if (pb != null)    pb.setProgress(pct);
-        if (tvPct != null) tvPct.setText(pct + "%");
+        TextView etoile = new TextView(this);
+        etoile.setText("★");
+        etoile.setTextSize(22f);
+        etoile.setTextColor(Color.parseColor("#0AAEA0"));
+        LinearLayout.LayoutParams ep = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT);
+        ep.bottomMargin = dp(4);
+        etoile.setLayoutParams(ep);
+        badge.addView(etoile);
 
-        if (!formations.isEmpty()) {
-            Formation f = formations.get(0);
-            if (tvTitre != null)    tvTitre.setText(f.getTitre());
-            if (tvSousInfo != null) tvSousInfo.setText(f.getThematique() + " · " + f.getDureeMinutes() + " min");
-        }
+        TextView nom = new TextView(this);
+        nom.setText(titre.length() > 14 ? titre.substring(0, 14) + "…" : titre);
+        nom.setTextSize(10f);
+        nom.setTypeface(null, android.graphics.Typeface.BOLD);
+        nom.setTextColor(Color.parseColor("#111827"));
+        nom.setGravity(android.view.Gravity.CENTER);
+        badge.addView(nom);
+
+        conteneur.addView(badge);
+    }
+
+    // ─── UTILITAIRES ──────────────────────────────────────────────────────────
+
+    private int dp(int val) {
+        return Math.round(val * getResources().getDisplayMetrics().density);
+    }
+
+    private String capitaliser(String s) {
+        if (s == null || s.isEmpty()) return "";
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
     }
 
     private void deconnexion(SharedPreferences prefs) {

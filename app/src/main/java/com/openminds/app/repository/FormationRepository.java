@@ -46,6 +46,10 @@ public class FormationRepository {
         return formationDao.getAllFormations();  // Room gère le thread car il voit le LiveData
     }
 
+    public LiveData<List<Formation>> getFormationsInscrites(int userId) {
+        return formationDao.getFormationsInscritesParUtilisateur(userId);
+    }
+
     public LiveData<Formation> getFormationById(int id) {
         return formationDao.getFormationById(id);
     }
@@ -64,7 +68,7 @@ public class FormationRepository {
     }
 
 
-    
+
 
     // ── Sessions ─────────────────────────────────────────
 

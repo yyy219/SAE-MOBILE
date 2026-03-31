@@ -31,12 +31,14 @@ public interface FormationDao {
     @Query("SELECT * FROM formation WHERE thematique = :thematique")
     LiveData<List<Formation>> getFormationsByThematique(String thematique);
 
-    @Query("SELECT f.* FROM formation f " +
-            "INNER JOIN telechargement t ON f.id = t.formationId " +
-            "WHERE t.utilisateurId = :userId " +
-            "ORDER BY t.dateTelecharge DESC")
-    LiveData<List<Formation>> getFormationsTelechargees(int userId);
-
     @Query("SELECT * FROM formation WHERE id IN (:ids)")
     LiveData<List<Formation>> getFormationsByIds(List<Integer> ids);
+
+    // Formations auxquelles un bénévole est inscrit (jointure inscription→session→formation)
+    @Query("SELECT DISTINCT f.* FROM formation f " +
+            "INNER JOIN session s ON s.formationId = f.id " +
+            "INNER JOIN inscription i ON i.sessionId = s.id " +
+            "WHERE i.utilisateurId = :userId " +
+            "ORDER BY i.timestampInscription DESC")
+    LiveData<List<Formation>> getFormationsInscritesParUtilisateur(int userId);
 }
