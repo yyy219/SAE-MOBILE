@@ -59,6 +59,6 @@ public class TelechargementRepository {
     }
 
     public LiveData<List<Formation>> getFormationsTelechargeesLive(int userId) {
-        return formationDao.getFormationsByIds(telechargementDao.getFormationIdsTelechargeesSync(userId));
+        return telechargementDao.getFormationsTelechargeesLive(userId);
     }
 }

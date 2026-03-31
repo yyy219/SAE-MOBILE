@@ -6,6 +6,8 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+
+import com.openminds.app.database.entity.Formation;
 import com.openminds.app.database.entity.Telechargement;
 import java.util.List;
 
@@ -41,4 +43,10 @@ public interface TelechargementDao {
 
     @Query("SELECT formationId FROM telechargement WHERE utilisateurId = :userId")
     List<Integer> getFormationIdsTelechargeesSync(int userId);
+
+    @Query("SELECT f.* FROM formation f " +
+            "INNER JOIN telechargement t ON f.id = t.formationId " +
+            "WHERE t.utilisateurId = :userId")
+    LiveData<List<Formation>> getFormationsTelechargeesLive(int userId);
+
 }

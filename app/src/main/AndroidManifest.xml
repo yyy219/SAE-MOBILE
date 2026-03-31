@@ -47,6 +47,7 @@
         <activity android:name="com.openminds.app.ui.MesBadgesActivity" android:exported="false" />
 
         <activity android:name="com.openminds.app.ui.StatistiquesActivity" />
+        <activity android:name="com.openminds.app.ui.MesformationsActivity" />
 
         <!-- FileProvider pour export PDF -->
         <provider
