@@ -14,14 +14,15 @@
     android:background="@color/couleur_navy"
     android:elevation="4dp">
 
-    <ImageView
-        android:id="@+id/btnRetourBadges"
-        android:layout_width="34dp"
-        android:layout_height="34dp"
-        android:src="@drawable/baseline_arrow_back_ios_24"
+    <ImageButton
+        android:id="@+id/btnRetour"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:padding="8dp"
-        app:tint="#FFFFFF"/> <TextView
+        android:src="@android:drawable/ic_media_previous"
+        android:tint="#FFFFFF"
+        android:contentDescription="Retour" />
+    <TextView
     android:layout_width="0dp"
     android:layout_height="wrap_content"
     android:layout_weight="1"

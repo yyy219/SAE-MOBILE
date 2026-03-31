@@ -20,15 +20,14 @@
             android:gravity="center_vertical"
             android:paddingStart="16dp">
 
-            <TextView
-                android:id="@+id/btn_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="☰"
-                android:textColor="@android:color/white"
-                android:textSize="28sp"
-                android:paddingEnd="16dp"/>
-
+            <ImageButton
+                android:id="@+id/btnRetour"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_previous"
+                android:tint="#FFFFFF"
+                android:contentDescription="Retour" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

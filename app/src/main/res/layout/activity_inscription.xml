@@ -148,7 +148,7 @@
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_bouton_gradient"
+                android:backgroundTint="@color/vert"
                 android:layout_marginBottom="16dp"/>
 
             <LinearLayout android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal" android:layout_gravity="center">

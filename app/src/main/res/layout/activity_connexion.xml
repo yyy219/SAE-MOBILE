@@ -221,7 +221,7 @@
                 android:textStyle="bold"
                 android:textColor="#FFFFFF"
                 android:textAllCaps="false"
-                android:background="@drawable/bg_bouton_gradient"
+                android:backgroundTint="@color/vert"
                 android:layout_marginBottom="16dp"/>
 
             <!-- Divider -->
