@@ -52,17 +52,17 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract ResultatQuizDao resultatQuizDao();
     public abstract StatistiquesDao statistiquesDao();
 
-    // Callback : insérer le compte admin par défaut au premier lancement
     private static final RoomDatabase.Callback CALLBACK = new RoomDatabase.Callback() {
         @Override
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
-            // Exécuté UNE SEULE FOIS à la création de la base
             Executors.newSingleThreadExecutor().execute(() -> {
                 if (INSTANCE != null) {
-                    UtilisateurDao dao = INSTANCE.utilisateurDao();
+                    UtilisateurDao userDao = INSTANCE.utilisateurDao();
+                    FormationDao formationDao = INSTANCE.formationDao();
+                    ContenuDao contenuDao = INSTANCE.contenuDao();
 
-                    // Compte admin par défaut
+                    // ── Utilisateurs ──
                     Utilisateur admin = new Utilisateur();
                     admin.setNom("Admin");
                     admin.setPrenom("OpenMinds");
@@ -70,9 +70,8 @@ public abstract class AppDatabase extends RoomDatabase {
                     admin.setMotDePasse("admin123");
                     admin.setRole("admin");
                     admin.setDateInscription(new java.util.Date().toString());
-                    dao.insert(admin);
+                    userDao.insert(admin);
 
-                    // Compte bénévole de test
                     Utilisateur benevole = new Utilisateur();
                     benevole.setNom("Bénévole");
                     benevole.setPrenom("Test");
@@ -80,13 +79,70 @@ public abstract class AppDatabase extends RoomDatabase {
                     benevole.setMotDePasse("test123");
                     benevole.setRole("benevole");
                     benevole.setDateInscription(new java.util.Date().toString());
-                    dao.insert(benevole);
+                    userDao.insert(benevole);
+
+                    // ── Formation 1 ──
+                    Formation f1 = new Formation();
+                    f1.setTitre("Formation au numérique");
+                    f1.setDescription("Apprendre les bases du numérique");
+                    f1.setThematique("inclusion");
+                    f1.setDureeMinutes(60);
+                    f1.setDateCreation("01/04/2026");
+                    long id1 = formationDao.insert(f1);
+
+                    Contenu f1m1 = new Contenu();
+                    f1m1.setFormationId((int) id1);
+                    f1m1.setTitre("Introduction au numérique");
+                    f1m1.setType("texte");
+                    f1m1.setContenuTexte("Découvrez les bases de l'informatique et d'internet.");
+                    f1m1.setOrdre(1);
+                    contenuDao.insert(f1m1);
+
+                    Contenu f1m2 = new Contenu();
+                    f1m2.setFormationId((int) id1);
+                    f1m2.setTitre("Utiliser un ordinateur");
+                    f1m2.setType("texte");
+                    f1m2.setContenuTexte("Apprenez à naviguer sur un système d'exploitation.");
+                    f1m2.setOrdre(2);
+                    contenuDao.insert(f1m2);
+
+                    Contenu f1m3 = new Contenu();
+                    f1m3.setFormationId((int) id1);
+                    f1m3.setTitre("Internet et sécurité");
+                    f1m3.setType("texte");
+                    f1m3.setContenuTexte("Les bonnes pratiques pour naviguer en sécurité.");
+                    f1m3.setOrdre(3);
+                    contenuDao.insert(f1m3);
+
+                    // ── Formation 2 ──
+                    Formation f2 = new Formation();
+                    f2.setTitre("Introduction à l'inclusion");
+                    f2.setDescription("Comprendre et promouvoir l'inclusion sociale");
+                    f2.setThematique("inclusion");
+                    f2.setDureeMinutes(45);
+                    f2.setDateCreation("01/04/2026");
+                    long id2 = formationDao.insert(f2);
+
+                    Contenu f2m1 = new Contenu();
+                    f2m1.setFormationId((int) id2);
+                    f2m1.setTitre("Qu'est-ce que l'inclusion ?");
+                    f2m1.setType("texte");
+                    f2m1.setContenuTexte("Définition et enjeux de l'inclusion sociale.");
+                    f2m1.setOrdre(1);
+                    contenuDao.insert(f2m1);
+
+                    Contenu f2m2 = new Contenu();
+                    f2m2.setFormationId((int) id2);
+                    f2m2.setTitre("Agir au quotidien");
+                    f2m2.setType("texte");
+                    f2m2.setContenuTexte("Des actions concrètes pour favoriser l'inclusion.");
+                    f2m2.setOrdre(2);
+                    contenuDao.insert(f2m2);
                 }
             });
         }
     };
 
-    // Singleton
     public static AppDatabase getInstance(Context context) {
         if (INSTANCE == null) {
             synchronized (AppDatabase.class) {

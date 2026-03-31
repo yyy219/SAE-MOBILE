@@ -1,7 +1,6 @@
 package com.openminds.app.ui;
 
 import android.os.Bundle;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -24,10 +23,8 @@ public class FormationActivity extends AppCompatActivity {
         }
 
         drawerLayout = findViewById(R.id.drawer_layout);
-        TextView btnMenu = findViewById(R.id.btn_menu);
+        findViewById(R.id.btnRetour).setOnClickListener(v -> finish());
         NavigationView navigationView = findViewById(R.id.nav_view);
-
-        btnMenu.setOnClickListener(v -> drawerLayout.openDrawer(GravityCompat.START));
 
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();

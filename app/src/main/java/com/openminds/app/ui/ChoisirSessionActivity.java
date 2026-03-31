@@ -48,7 +48,7 @@ public class ChoisirSessionActivity extends AppCompatActivity {
         btnSinscrire = findViewById(R.id.btnSinscrire);
         TextView tvAnnuler = findViewById(R.id.tvAnnuler);
 
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        findViewById(R.id.btnRetour).setOnClickListener(v -> finish());
 
         if (titreFormation != null) {
             tvTitreFormation.setText(titreFormation);

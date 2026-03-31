@@ -15,21 +15,11 @@ import java.util.List;
 public class StatistiquesActivity extends AppCompatActivity {
 
     private StatistiquesViewModel viewModel;
-
-    // KPI Cards
     private TextView tvNbFormations, tvNbBenevoles, tvTauxReussite, tvNbSessions;
-
-    // Label période
     private TextView tvLabelPeriode;
-
-    // Thématiques
     private TextView tvPctInclusion, tvPctEnvironnement, tvPctEgalite;
     private ProgressBar pbInclusion, pbEnvironnement, pbEgalite;
-
-    // Top formations
     private TextView tvTop1Titre, tvTop1Nb, tvTop2Titre, tvTop2Nb;
-
-    // Sélecteur période
     private TextView btn7j, btnMois, btnAnnee;
     private TextView selectedPeriod = null;
 
@@ -43,10 +33,8 @@ public class StatistiquesActivity extends AppCompatActivity {
         setupPeriodeSelector();
         observerDonnees();
         configurerBoutonPdf();
-        findViewById(R.id.btnBack).setOnClickListener(v -> finish());
+        findViewById(R.id.btnRetour).setOnClickListener(v -> finish());
     }
-
-    // ── Liaison vues / variables ──────────────────────────────────
 
     private void lierVues() {
         tvNbFormations     = findViewById(R.id.tvNbFormations);
@@ -54,61 +42,43 @@ public class StatistiquesActivity extends AppCompatActivity {
         tvTauxReussite     = findViewById(R.id.tvTauxReussite);
         tvNbSessions       = findViewById(R.id.tvNbSessions);
         tvLabelPeriode     = findViewById(R.id.tvLabelPeriode);
-
         tvPctInclusion     = findViewById(R.id.tvPctInclusion);
         tvPctEnvironnement = findViewById(R.id.tvPctEnvironnement);
         tvPctEgalite       = findViewById(R.id.tvPctEgalite);
         pbInclusion        = findViewById(R.id.pbInclusion);
         pbEnvironnement    = findViewById(R.id.pbEnvironnement);
         pbEgalite          = findViewById(R.id.pbEgalite);
-
         tvTop1Titre = findViewById(R.id.tvTop1Titre);
         tvTop1Nb    = findViewById(R.id.tvTop1Nb);
         tvTop2Titre = findViewById(R.id.tvTop2Titre);
         tvTop2Nb    = findViewById(R.id.tvTop2Nb);
-
         btn7j    = findViewById(R.id.btn7Jours);
         btnMois  = findViewById(R.id.btnCeMois);
         btnAnnee = findViewById(R.id.btnAnnee);
     }
 
-    // ── Observation des LiveData ──────────────────────────────────
-
     private void observerDonnees() {
-
         viewModel.nbFormations.observe(this, n ->
                 tvNbFormations.setText(String.valueOf(n != null ? n : 0)));
-
         viewModel.nbBenevolesActifs.observe(this, n ->
                 tvNbBenevoles.setText(String.valueOf(n != null ? n : 0)));
-
         viewModel.nbSessions.observe(this, n ->
                 tvNbSessions.setText(String.valueOf(n != null ? n : 0)));
-
         viewModel.tauxReussite.observe(this, t -> {
             int pct = (t != null) ? Math.round(t) : 0;
             tvTauxReussite.setText(pct + "%");
         });
-
         viewModel.getLabelPeriode().observe(this, label ->
                 tvLabelPeriode.setText(label));
-
-        viewModel.participationParThematique.observe(this,
-                this::mettreAJourThematiques);
-
-        viewModel.topFormations.observe(this,
-                this::mettreAJourTopFormations);
+        viewModel.participationParThematique.observe(this, this::mettreAJourThematiques);
+        viewModel.topFormations.observe(this, this::mettreAJourTopFormations);
     }
 
-    // ── Mise à jour des barres thématiques ────────────────────────
-
     private void mettreAJourThematiques(List<StatThematique> stats) {
-        // Reset systématique d'abord
         tvPctInclusion.setText("0%");     pbInclusion.setProgress(0);
         tvPctEnvironnement.setText("0%"); pbEnvironnement.setProgress(0);
         tvPctEgalite.setText("0%");       pbEgalite.setProgress(0);
-
-        if (stats == null || stats.isEmpty()) return; // OK de partir maintenant
+        if (stats == null || stats.isEmpty()) return;
 
         int maxInscrits = 0;
         for (StatThematique s : stats)
@@ -133,15 +103,10 @@ public class StatistiquesActivity extends AppCompatActivity {
         }
     }
 
-    // ── Mise à jour du top formations ─────────────────────────────
-
     private void mettreAJourTopFormations(List<FormationTop> tops) {
-        // Reset systématique d'abord
         tvTop1Titre.setText("—"); tvTop1Nb.setText("0");
         tvTop2Titre.setText("—"); tvTop2Nb.setText("0");
-
-        if (tops == null || tops.isEmpty()) return; // OK de partir maintenant
-
+        if (tops == null || tops.isEmpty()) return;
         if (tops.size() >= 1) {
             tvTop1Titre.setText(tops.get(0).getTitre());
             tvTop1Nb.setText(String.valueOf(tops.get(0).getNbInscrits()));
@@ -152,28 +117,14 @@ public class StatistiquesActivity extends AppCompatActivity {
         }
     }
 
-    // ── Sélecteur de période ──────────────────────────────────────
-
-    private void configurerPeriode() {
-        btn7j.setOnClickListener(v -> viewModel.setPeriode7Jours());
-        btnMois.setOnClickListener(v -> viewModel.setPeriodeMois());
-        btnAnnee.setOnClickListener(v -> viewModel.setPeriodeAnnee());
-    }
-
-    // ── Export PDF ────────────────────────────────────────────────
-
     private void configurerBoutonPdf() {
         findViewById(R.id.btnExporterPdf).setOnClickListener(v -> {
-
-            // On collecte toutes les valeurs actuelles des LiveData
             PdfExportHelper.StatsSnapshot snap = new PdfExportHelper.StatsSnapshot();
-
-            Integer nbF = viewModel.nbFormations.getValue();
-            Integer nbB = viewModel.nbBenevolesActifs.getValue();
-            Integer nbS = viewModel.nbSessions.getValue();
+            Integer nbF  = viewModel.nbFormations.getValue();
+            Integer nbB  = viewModel.nbBenevolesActifs.getValue();
+            Integer nbS  = viewModel.nbSessions.getValue();
             Float   taux = viewModel.tauxReussite.getValue();
             String  label = viewModel.getLabelPeriode().getValue();
-
             snap.nbFormations  = nbF  != null ? nbF  : 0;
             snap.nbBenevoles   = nbB  != null ? nbB  : 0;
             snap.nbSessions    = nbS  != null ? nbS  : 0;
@@ -181,11 +132,8 @@ public class StatistiquesActivity extends AppCompatActivity {
             snap.labelPeriode  = label != null ? label : "";
             snap.thematiques   = viewModel.participationParThematique.getValue();
             snap.topFormations = viewModel.topFormations.getValue();
-
             PdfExportHelper.exporterEtPartager(this, snap);
         });
-
-
     }
 
     private void setupPeriodeSelector() {
@@ -194,13 +142,12 @@ public class StatistiquesActivity extends AppCompatActivity {
         TextView btnAnnee  = findViewById(R.id.btnAnnee);
         TextView tvLabel   = findViewById(R.id.tvLabelPeriode);
 
-        // Sélection par défaut
         selectPeriode(btnCeMois, tvLabel);
         viewModel.setPeriodeMois();
 
         btn7Jours.setOnClickListener(v -> {
             selectPeriode(btn7Jours, tvLabel);
-            viewModel.setPeriode7Jours();        // ← data
+            viewModel.setPeriode7Jours();
         });
         btnCeMois.setOnClickListener(v -> {
             selectPeriode(btnCeMois, tvLabel);
@@ -213,19 +160,14 @@ public class StatistiquesActivity extends AppCompatActivity {
     }
 
     private void selectPeriode(TextView selected, TextView tvLabel) {
-        // Reset l'ancien
         if (selectedPeriod != null) {
             selectedPeriod.setBackground(null);
             selectedPeriod.setTextColor(getColor(R.color.text_secondaire));
             selectedPeriod.setTypeface(null, Typeface.NORMAL);
         }
-
-        // Applique sur le nouveau
         selected.setBackgroundResource(R.drawable.background_periode_choisi);
         selected.setTextColor(getColor(R.color.couleur_navy));
         selected.setTypeface(null, Typeface.BOLD);
-
         selectedPeriod = selected;
     }
-
 }

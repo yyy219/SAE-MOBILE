@@ -37,4 +37,7 @@ public interface SessionDao {
             "FROM session s LEFT JOIN inscription i ON i.sessionId = s.id " +
             "WHERE s.id = :sessionId GROUP BY s.id")
     int getPlacesRestantes(int sessionId);
+
+    @Query("SELECT * FROM session WHERE formationId = :formationId ORDER BY dateDebut ASC")
+    List<Session> getSessionsByFormationSync(int formationId);
 }
