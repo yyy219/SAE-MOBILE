@@ -33,4 +33,8 @@ public class TelechargementViewModel extends AndroidViewModel {
     public LiveData<List<Integer>> getFormationIdsTelechargeesLive(int userId) {
         return repository.getFormationIdsTelechargeesLive(userId);
     }
+
+    public LiveData<List<Formation>> getFormationsTelechargeesLive(int userId) {
+        return repository.getFormationsTelechargeesLive(userId);
+    }
 }

@@ -36,4 +36,7 @@ public interface FormationDao {
             "WHERE t.utilisateurId = :userId " +
             "ORDER BY t.dateTelecharge DESC")
     LiveData<List<Formation>> getFormationsTelechargees(int userId);
+
+    @Query("SELECT * FROM formation WHERE id IN (:ids)")
+    LiveData<List<Formation>> getFormationsByIds(List<Integer> ids);
 }

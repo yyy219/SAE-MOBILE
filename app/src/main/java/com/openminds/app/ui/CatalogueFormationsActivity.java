@@ -70,7 +70,7 @@ public class CatalogueFormationsActivity extends AppCompatActivity {
         telechargementViewModel = new ViewModelProvider(this).get(TelechargementViewModel.class);
 
         // ✅ Observer 1 — Liste des formations du catalogue
-        formationViewModel.getAllFormations().observe(this, formations -> {
+        formationViewModel.toutesLesFormations.observe(this, formations -> {
             if (formations != null) {
                 adapter.setFormations(formations);
             }

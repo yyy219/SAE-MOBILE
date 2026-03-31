@@ -38,4 +38,7 @@ public interface TelechargementDao {
 
     @Query("SELECT formationId FROM telechargement WHERE utilisateurId = :userId")
     LiveData<List<Integer>> getFormationIdsTelechargeesLive(int userId);
+
+    @Query("SELECT formationId FROM telechargement WHERE utilisateurId = :userId")
+    List<Integer> getFormationIdsTelechargeesSync(int userId);
 }

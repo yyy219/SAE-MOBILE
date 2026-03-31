@@ -1,13 +1,11 @@
 package com.openminds.app.ui;
 
-
 import com.openminds.openminds.R;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
@@ -36,14 +34,14 @@ public class MesformationsActivity extends AppCompatActivity {
         CatalogueAdapter adapter = new CatalogueAdapter(formation -> {
             Intent intent = new Intent(this, FormationActivity.class);
             intent.putExtra("formationId", formation.getId());
-            intent.putExtra("offline", true); // signale au player qu'on est offline
+            intent.putExtra("offline", true);
             startActivity(intent);
         });
         recyclerView.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(TelechargementViewModel.class);
 
-        viewModel.getFormationsTelechargees(currentUserId).observe(this, formations -> {
+        viewModel.getFormationsTelechargeesLive(currentUserId).observe(this, formations -> {
             if (formations == null || formations.isEmpty()) {
                 recyclerView.setVisibility(View.GONE);
                 tvEmpty.setVisibility(View.VISIBLE);
