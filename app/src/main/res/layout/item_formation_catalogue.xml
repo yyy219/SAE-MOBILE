@@ -4,62 +4,59 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp">
+    android:layout_margin="8dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="4dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/tvThematiqueFormation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="INCLUSION"
-            android:textColor="#6C63FF"
-            android:textSize="11sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="4dp" />
+            android:background="@drawable/bg_badge_thematique"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="2dp"
+            android:textSize="10sp"
+            android:textColor="@color/blanc"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tvTitreFormation"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Titre de la formation"
-            android:textColor="#1A2B4A"
-            android:textSize="16sp"
+            android:layout_below="@id/tvThematiqueFormation"
+            android:layout_toStartOf="@+id/btnTelecharger"
+            android:layout_marginTop="6dp"
+            android:textSize="15sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/noir"
+            android:maxLines="2"
+            android:ellipsize="end" />
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/tvDureeFormation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:layout_below="@id/tvTitreFormation"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp"
+            android:textColor="@color/text_secondaire"
+            android:drawableStart="@drawable/ic_clock"
+            android:drawablePadding="4dp" />
 
-            <TextView
-                android:id="@+id/tvDureeFormation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="20 min"
-                android:background="@drawable/badge_gris"
-                android:textSize="12sp"
-                android:textColor="#444444"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:paddingTop="4dp"
-                android:paddingBottom="4dp"
-                android:layout_marginEnd="8dp" />
+        <ImageButton
+            android:id="@+id/btnTelecharger"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_download"
+            android:contentDescription="Télécharger la formation" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="›"
-                android:textSize="20sp"
-                android:textColor="#AAAAAA" />
-        </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
 </androidx.cardview.widget.CardView>

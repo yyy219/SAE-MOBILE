@@ -30,4 +30,10 @@ public interface FormationDao {
 
     @Query("SELECT * FROM formation WHERE thematique = :thematique")
     LiveData<List<Formation>> getFormationsByThematique(String thematique);
+
+    @Query("SELECT f.* FROM formation f " +
+            "INNER JOIN telechargement t ON f.id = t.formationId " +
+            "WHERE t.utilisateurId = :userId " +
+            "ORDER BY t.dateTelecharge DESC")
+    LiveData<List<Formation>> getFormationsTelechargees(int userId);
 }

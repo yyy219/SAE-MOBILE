@@ -34,4 +34,8 @@ public interface TelechargementDao {
     @Query("DELETE FROM telechargement " +
             "WHERE utilisateurId = :uid AND formationId = :fid")
     void deleteByUserAndFormation(int uid, int fid);
+
+
+    @Query("SELECT formationId FROM telechargement WHERE utilisateurId = :userId")
+    LiveData<List<Integer>> getFormationIdsTelechargeesLive(int userId);
 }

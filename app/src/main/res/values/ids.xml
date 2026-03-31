@@ -19,4 +19,8 @@
         <item name="btnAnnee" type="id"/>
         <item name="tvLabelPeriode" type="id"/>
         <item name="btnExporterPdf" type="id"/>
-    </resources>
+        <item name="layoutVide" type="id"/>
+        <item name="recyclerHorsLigne" type="id"/>
+       <item name="recyclerViewMesFormations" type="id" />
+      <item name="tvEmptyMesFormations" type="id" />
+</resources>
