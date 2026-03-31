@@ -182,6 +182,15 @@ public class MonEspaceActivity extends AppCompatActivity {
         if (btnDecoBenv != null)
             btnDecoBenv.setOnClickListener(v -> deconnexion(
                     getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
+
+        // --- INTÉGRATION US07 : OUVRIR LA PAGE MES BADGES ---
+        LinearLayout btnOuvrirBadges = findViewById(R.id.btnOuvrirBadges);
+        if (btnOuvrirBadges != null) {
+            btnOuvrirBadges.setOnClickListener(v -> {
+                startActivity(new Intent(this, MesBadgesActivity.class));
+            });
+        }
+        // -----------------------------------------------------
     }
 
     private void calculerNiveau(int nbBadges) {

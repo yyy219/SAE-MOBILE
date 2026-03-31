@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Environment;
+import android.widget.Toast;
+
 import androidx.core.content.FileProvider;
 import com.openminds.app.database.entity.FormationTop;
 import com.openminds.app.database.entity.StatThematique;
@@ -171,5 +175,78 @@ public class PdfExportHelper {
                                     Paint kpiP, Paint corpsP) {
         canvas.drawText(valeur, x, y + 20, kpiP);
         canvas.drawText(label,  x, y + 35, corpsP);
+    }
+
+    // NOUVELLE MÉTHODE POUR L'US07 : Générer l'attestation du Badge
+    public static void exportAttestationPdf(Context context, String nomPrenom, String nomFormation, String dateObtention) {
+        PdfDocument pdfDocument = new PdfDocument();
+
+        // Format A4 (595 x 842 points)
+        PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
+        PdfDocument.Page page = pdfDocument.startPage(pageInfo);
+
+        Canvas canvas = page.getCanvas();
+        Paint paint = new Paint();
+
+        // 1. Cadre de décoration (Bordure)
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10f);
+        paint.setColor(Color.parseColor("#1ECFB8")); // Cyan d'OpenMinds
+        canvas.drawRect(30, 30, pageInfo.getPageWidth() - 30, pageInfo.getPageHeight() - 30, paint);
+
+        // 2. Titre de l'attestation
+        paint.setStyle(Paint.Style.FILL);
+        paint.setTextAlign(Paint.Align.CENTER);
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setColor(Color.parseColor("#0B1629")); // Bleu foncé
+        paint.setTextSize(36f);
+        canvas.drawText("ATTESTATION DE RÉUSSITE", pageInfo.getPageWidth() / 2f, 150, paint);
+
+        // 3. Texte d'introduction
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        paint.setTextSize(18f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Le réseau OpenMinds a l'honneur de décerner ce certificat à :", pageInfo.getPageWidth() / 2f, 250, paint);
+
+        // 4. Nom de l'utilisateur
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC));
+        paint.setTextSize(32f);
+        paint.setColor(Color.parseColor("#60A5FA")); // Bleu clair
+        canvas.drawText(nomPrenom, pageInfo.getPageWidth() / 2f, 320, paint);
+
+        // 5. Texte de validation
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        paint.setTextSize(18f);
+        paint.setColor(Color.BLACK);
+        canvas.drawText("Pour avoir complété avec succès le parcours de formation :", pageInfo.getPageWidth() / 2f, 420, paint);
+
+        // 6. Nom de la formation (Le Badge)
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
+        paint.setTextSize(28f);
+        paint.setColor(Color.parseColor("#1ECFB8"));
+        canvas.drawText(nomFormation, pageInfo.getPageWidth() / 2f, 480, paint);
+
+        // 7. Date et Signature
+        paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
+        paint.setTextSize(14f);
+        paint.setColor(Color.DKGRAY);
+        canvas.drawText("Fait le : " + dateObtention, pageInfo.getPageWidth() / 2f, 650, paint);
+        canvas.drawText("L'équipe Pédagogique OpenMinds", pageInfo.getPageWidth() / 2f, 680, paint);
+
+        pdfDocument.finishPage(page);
+
+        // Sauvegarde dans le dossier Téléchargements
+        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        String fileName = "Attestation_" + nomFormation.replaceAll("\\s+", "_") + ".pdf";
+        File file = new File(downloadsDir, fileName);
+
+        try {
+            pdfDocument.writeTo(new FileOutputStream(file));
+            Toast.makeText(context, "Attestation enregistrée dans Téléchargements !", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(context, "Erreur lors de la création du PDF", Toast.LENGTH_SHORT).show();
+        }
+        pdfDocument.close();
     }
 }

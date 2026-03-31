@@ -201,30 +201,7 @@
                     android:src="@drawable/ic_lock"
                     android:alpha="0.4"/>
 
-                <ImageView
-                    android:id="@+id/ivTogglePassword"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_gravity="center_vertical|end"
-                    android:layout_marginEnd="14dp"
-                    android:src="@drawable/ic_visibility"
-                    android:alpha="0.4"
-                    android:clickable="true"
-                    android:focusable="true"/>
             </FrameLayout>
-
-            <TextView
-                android:id="@+id/tvMotDePasseOublie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginBottom="20dp"
-                android:text="Mot de passe oublié ?"
-                android:textSize="12sp"
-                android:textColor="#0AAEA0"
-                android:textStyle="bold"
-                android:clickable="true"
-                android:focusable="true"/>
 
             <ProgressBar
                 android:id="@+id/progressBarConnexion"
@@ -258,17 +235,6 @@
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="ou" android:textSize="12sp" android:textColor="#9CA3AF" android:paddingStart="12dp" android:paddingEnd="12dp"/>
                 <View android:layout_width="0dp" android:layout_height="1dp" android:layout_weight="1" android:background="#E5E7EB"/>
             </LinearLayout>
-
-            <Button
-                android:id="@+id/btnGoogle"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="Continuer avec Google"
-                android:textSize="13sp"
-                android:textColor="#6B7280"
-                android:textAllCaps="false"
-                android:background="@drawable/bg_bouton_outline_light"
-                android:layout_marginBottom="20dp"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
