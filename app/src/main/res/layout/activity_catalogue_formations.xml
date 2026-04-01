@@ -1,57 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- HEADER -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="#0F2744"
-        android:gravity="center_vertical"
-        android:paddingTop="40dp"
-        android:paddingBottom="12dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_above="@id/bottomNavbar">
 
-        <ImageButton
-            android:id="@+id/btnRetour"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/ic_media_previous"
-            android:tint="#FFFFFF"
-            android:contentDescription="Retour" />
-
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Catalogue de formations"
-            android:textColor="#FFFFFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center" />
+            android:orientation="horizontal"
+            android:background="#0F2744"
+            android:gravity="center_vertical"
+            android:paddingTop="40dp"
+            android:paddingBottom="12dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp">
 
-        <!-- Bouton Mes formations offline -->
-        <ImageButton
-            android:id="@+id/btnMesFormations"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:src="@android:drawable/stat_sys_download_done"
-            android:tint="#1ECFB8"
-            android:contentDescription="Mes formations offline" />
+            <View
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Catalogue de formations"
+                android:textColor="#FFFFFF"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <ImageButton
+                android:id="@+id/btnMesFormations"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/stat_sys_download_done"
+                android:tint="#1ECFB8"
+                android:contentDescription="Mes formations offline" />
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewFormations"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:clipToPadding="false" />
+
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewFormations"
+    <LinearLayout
+        android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        android:clipToPadding="false" />
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@drawable/bg_navbar_light">
 
-</LinearLayout>
+        <LinearLayout android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="⊞" android:textSize="18sp" android:textColor="#1ECFB8"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Catalogue" android:textSize="9sp" android:textColor="#1ECFB8" android:textStyle="bold"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navMonEspace" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="☺" android:textSize="18sp" android:textColor="#7B8FA8"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Mon espace" android:textSize="9sp" android:textColor="#7B8FA8"/>
+        </LinearLayout>
+
+        <LinearLayout android:id="@+id/navBadges" android:layout_width="0dp" android:layout_height="match_parent" android:layout_weight="1" android:orientation="vertical" android:gravity="center">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="★" android:textSize="18sp" android:textColor="#7B8FA8"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Badges" android:textSize="9sp" android:textColor="#7B8FA8"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>

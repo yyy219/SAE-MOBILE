@@ -1,5 +1,7 @@
 package com.openminds.app.ui;
 
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Canvas;
@@ -8,15 +10,19 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
 import androidx.core.content.FileProvider;
 import com.openminds.app.database.entity.FormationTop;
 import com.openminds.app.database.entity.StatThematique;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -180,29 +186,27 @@ public class PdfExportHelper {
     // NOUVELLE MÉTHODE POUR L'US07 : Générer l'attestation du Badge
     public static void exportAttestationPdf(Context context, String nomPrenom, String nomFormation, String dateObtention) {
         PdfDocument pdfDocument = new PdfDocument();
-
-        // Format A4 (595 x 842 points)
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
         PdfDocument.Page page = pdfDocument.startPage(pageInfo);
 
         Canvas canvas = page.getCanvas();
         Paint paint = new Paint();
 
-        // 1. Cadre de décoration (Bordure)
+        // 1. Cadre de décoration
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10f);
-        paint.setColor(Color.parseColor("#1ECFB8")); // Cyan d'OpenMinds
+        paint.setColor(Color.parseColor("#1ECFB8"));
         canvas.drawRect(30, 30, pageInfo.getPageWidth() - 30, pageInfo.getPageHeight() - 30, paint);
 
-        // 2. Titre de l'attestation
+        // 2. Titre
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
-        paint.setColor(Color.parseColor("#0B1629")); // Bleu foncé
+        paint.setColor(Color.parseColor("#0B1629"));
         paint.setTextSize(36f);
         canvas.drawText("ATTESTATION DE RÉUSSITE", pageInfo.getPageWidth() / 2f, 150, paint);
 
-        // 3. Texte d'introduction
+        // 3. Texte d'intro
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paint.setTextSize(18f);
         paint.setColor(Color.BLACK);
@@ -211,7 +215,7 @@ public class PdfExportHelper {
         // 4. Nom de l'utilisateur
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC));
         paint.setTextSize(32f);
-        paint.setColor(Color.parseColor("#60A5FA")); // Bleu clair
+        paint.setColor(Color.parseColor("#60A5FA"));
         canvas.drawText(nomPrenom, pageInfo.getPageWidth() / 2f, 320, paint);
 
         // 5. Texte de validation
@@ -220,7 +224,7 @@ public class PdfExportHelper {
         paint.setColor(Color.BLACK);
         canvas.drawText("Pour avoir complété avec succès le parcours de formation :", pageInfo.getPageWidth() / 2f, 420, paint);
 
-        // 6. Nom de la formation (Le Badge)
+        // 6. Nom de la formation
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextSize(28f);
         paint.setColor(Color.parseColor("#1ECFB8"));
@@ -235,18 +239,40 @@ public class PdfExportHelper {
 
         pdfDocument.finishPage(page);
 
-        // Sauvegarde dans le dossier Téléchargements
-        File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        // --- SAUVEGARDE DANS LE DOSSIER DOWNLOADS ---
         String fileName = "Attestation_" + nomFormation.replaceAll("\\s+", "_") + ".pdf";
-        File file = new File(downloadsDir, fileName);
 
         try {
-            pdfDocument.writeTo(new FileOutputStream(file));
-            Toast.makeText(context, "Attestation enregistrée dans Téléchargements !", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                // Méthode moderne (Android 10 et +) : Utilisation de MediaStore
+                ContentResolver resolver = context.getContentResolver();
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
+                contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
+                // Indique à Android de le placer dans le dossier public Downloads
+                contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
+
+                Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
+                if (uri != null) {
+                    OutputStream outputStream = resolver.openOutputStream(uri);
+                    pdfDocument.writeTo(outputStream);
+                    outputStream.close();
+                    Toast.makeText(context, "Attestation enregistrée dans Téléchargements !", Toast.LENGTH_LONG).show();
+                }
+            } else {
+                // Ancienne méthode (Android 9 et moins)
+                File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File file = new File(downloadsDir, fileName);
+                FileOutputStream fos = new FileOutputStream(file);
+                pdfDocument.writeTo(fos);
+                fos.close();
+                Toast.makeText(context, "Attestation enregistrée dans Téléchargements !", Toast.LENGTH_LONG).show();
+            }
+        } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(context, "Erreur lors de la création du PDF", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Erreur PDF : " + e.getMessage(), Toast.LENGTH_LONG).show();
+        } finally {
+            pdfDocument.close();
         }
-        pdfDocument.close();
     }
 }

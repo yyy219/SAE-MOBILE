@@ -93,15 +93,12 @@ public class MonEspaceActivity extends AppCompatActivity {
 
         // Navbar 3 onglets bénévole
         View navCatalogue = findViewById(R.id.navCatalogue);
-        View navBadges    = findViewById(R.id.navBadges);
+        View navBadges    = findViewById(R.id.navBadges); // AJOUTE CECI
 
         if (navCatalogue != null)
-            navCatalogue.setOnClickListener(v ->
-                    startActivity(new Intent(this, CatalogueFormationsActivity.class)));
-
-        if (navBadges != null)
-            navBadges.setOnClickListener(v ->
-                    Toast.makeText(this, "Badges disponibles bientôt", Toast.LENGTH_SHORT).show());
+            navCatalogue.setOnClickListener(v -> { startActivity(new Intent(this, CatalogueFormationsActivity.class)); finish(); });
+        if (navBadges != null) // AJOUTE CECI
+            navBadges.setOnClickListener(v -> { startActivity(new Intent(this, MesBadgesActivity.class)); finish(); });
     }
 
     @Override
