@@ -7,6 +7,8 @@ import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
+
+import com.openminds.app.database.entity.Formation;
 import com.openminds.app.database.entity.Inscription;
 import java.util.List;
 

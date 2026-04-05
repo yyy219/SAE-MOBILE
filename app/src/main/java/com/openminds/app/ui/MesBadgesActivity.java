@@ -13,6 +13,7 @@
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.openminds.app.viewmodel.StatistiquesViewModel;
     import com.openminds.openminds.R; // Modifie si ton R est dans com.openminds.openminds
     import com.openminds.app.database.entity.Formation;
     import com.openminds.app.database.entity.Inscription;
@@ -59,7 +60,7 @@
             }
 
             UtilisateurViewModel userVM = new ViewModelProvider(this).get(UtilisateurViewModel.class);
-            FormationViewModel formVM = new ViewModelProvider(this).get(FormationViewModel.class);
+            StatistiquesViewModel statsVM = new ViewModelProvider(this).get(StatistiquesViewModel.class);
 
             // 3. Récupérer le vrai nom pour l'écrire sur le PDF
             userVM.getUtilisateurById(userId).observe(this, u -> {
@@ -68,43 +69,23 @@
                 }
             });
 
-            // 4. LE SYSTÈME : Récupérer uniquement les formations terminées (100%)
-            userVM.getMesInscriptions(userId).observe(this, inscriptions -> {
-                if (inscriptions != null) {
-                    List<Integer> idFormationsTerminees = new ArrayList<>();
+            // 4. LE SYSTÈME : Récupérer uniquement les formations terminées via la base de données
+            statsVM.getFormationsTerminees(userId).observe(this, badgesObtenus -> {
+                if (badgesObtenus != null) {
 
-                    // Filtrer les inscriptions complètes
-                    for (Inscription inc : inscriptions) {
-                        if (inc.getProgressionPourcentage() >= 100) {
-                            // CORRECTION : On prend l'ID de la formation, pas celui de l'inscription !
-                            idFormationsTerminees.add(inc.getId());
-                        }
+                    // Mettre à jour l'Adapter avec les vrais badges
+                    adapter.setFormations(badgesObtenus);
+
+                    // Gérer l'affichage (Texte vide ou Liste)
+                    if (badgesObtenus.isEmpty()) {
+                        tvEmptyBadges.setVisibility(View.VISIBLE);
+                        rvBadges.setVisibility(View.GONE);
+                    } else {
+                        tvEmptyBadges.setVisibility(View.GONE);
+                        rvBadges.setVisibility(View.VISIBLE);
                     }
-
-                    // Croiser avec la liste des Formations pour avoir les titres
-                    formVM.toutesLesFormations.observe(this, toutesFormations -> {
-                        if (toutesFormations != null) {
-                            List<Formation> badgesObtenus = new ArrayList<>();
-                            for (Formation f : toutesFormations) {
-                                if (idFormationsTerminees.contains(f.getId())) {
-                                    badgesObtenus.add(f);
-                                }
-                            }
-
-                            // Mettre à jour la vue (Liste ou Message Vide)
-                            adapter.setFormations(badgesObtenus);
-                            if (badgesObtenus.isEmpty()) {
-                                tvEmptyBadges.setVisibility(View.VISIBLE);
-                                rvBadges.setVisibility(View.GONE);
-                            } else {
-                                tvEmptyBadges.setVisibility(View.GONE);
-                                rvBadges.setVisibility(View.VISIBLE);
-                            }
-                        }
-                    });
                 }
             });
-
             // 5. Configurer les clics de la barre de navigation du bas
             setupBottomNavigation();
         }

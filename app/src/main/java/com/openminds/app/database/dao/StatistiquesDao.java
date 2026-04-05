@@ -3,6 +3,8 @@ package com.openminds.app.database.dao;
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Query;
+
+import com.openminds.app.database.entity.Formation;
 import com.openminds.app.database.entity.FormationTop;
 import com.openminds.app.database.entity.StatThematique;
 import java.util.List;
@@ -53,4 +55,10 @@ public interface StatistiquesDao {
             "ORDER BY nbInscrits DESC " +
             "LIMIT :limit")
     LiveData<List<FormationTop>> getTopFormations(long debut, int limit);
+
+    @Query("SELECT f.* FROM formation f " +
+            "INNER JOIN session s ON f.id = s.formationId " +
+            "INNER JOIN inscription i ON s.id = i.sessionId " +
+            "WHERE i.utilisateurId = :userId AND i.progressionPourcentage >= 100")
+    LiveData<List<Formation>> getFormationsTerminees(int userId);
 }
