@@ -6,6 +6,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Transformations;
+
+import com.openminds.app.database.entity.Formation;
 import com.openminds.app.repository.StatistiquesRepository;
 import com.openminds.app.database.entity.FormationTop;
 import com.openminds.app.database.entity.StatThematique;
@@ -98,5 +100,10 @@ public class StatistiquesViewModel extends AndroidViewModel {
     public LiveData<List<FormationTop>> getTopFormationsComplet() {
         Long debut = debutPeriode.getValue();
         return repository.getTopFormations(debut != null ? debut : 0L, 100);
+    }
+
+    // À ajouter avec les autres méthodes
+    public LiveData<List<Formation>> getFormationsTerminees(int utilisateurId) {
+        return repository.getFormationsTerminees(utilisateurId);
     }
 }

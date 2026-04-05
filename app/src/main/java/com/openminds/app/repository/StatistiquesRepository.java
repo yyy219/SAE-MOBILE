@@ -4,6 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import com.openminds.app.database.AppDatabase;
 import com.openminds.app.database.dao.StatistiquesDao;
+import com.openminds.app.database.entity.Formation;
 import com.openminds.app.database.entity.FormationTop;
 import com.openminds.app.database.entity.StatThematique;
 import java.util.List;
@@ -38,5 +39,9 @@ public class StatistiquesRepository {
 
     public LiveData<List<FormationTop>> getTopFormations(long debut, int limit) {
         return dao.getTopFormations(debut, limit);
+    }
+
+    public LiveData<List<Formation>> getFormationsTerminees(int utilisateurId) {
+        return dao.getFormationsTerminees(utilisateurId);
     }
 }
