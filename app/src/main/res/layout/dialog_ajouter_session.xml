@@ -73,7 +73,7 @@
             android:minHeight="48dp"
             android:hint="ex: 15/04/2026 10h00"/>
 
-        <!-- Lieu caché par défaut, visible si Présentielle -->
+
         <TextView
             android:id="@+id/tvLieuLabel"
             android:layout_width="wrap_content"
@@ -91,7 +91,7 @@
             android:hint="ex: Salle B, 12 rue de Paris"
             android:visibility="gone"/>
 
-        <!-- Lien online visible par défaut, caché si Présentielle -->
+
         <TextView
             android:id="@+id/tvLienLabel"
             android:layout_width="wrap_content"

@@ -30,7 +30,7 @@ public interface InscriptionDao {
     @Query("SELECT * FROM inscription WHERE sessionId = :sessionId")
     LiveData<List<Inscription>> getInscriptionsBySession(int sessionId);
 
-    // Retourne 1 si déjà inscrit, 0 sinon
+
     @Query("SELECT COUNT(*) FROM inscription " +
             "WHERE utilisateurId = :uid AND sessionId = :sid")
     int isDejaInscrit(int uid, int sid);

@@ -30,7 +30,7 @@ import java.util.Locale;
 
 public class PdfExportHelper {
 
-    // Données à passer au générateur
+
     public static class StatsSnapshot {
         public int nbFormations;
         public int nbBenevoles;
@@ -52,7 +52,7 @@ public class PdfExportHelper {
 
         document.finishPage(page);
 
-        // Sauvegarde dans le dossier de l'app
+
         File fichier = new File(context.getExternalFilesDir(null),
                 "rapport_openminds.pdf");
         try {
@@ -64,7 +64,7 @@ public class PdfExportHelper {
             document.close();
         }
 
-        // Partage via FileProvider (Android 7+)
+
         Uri uri = FileProvider.getUriForFile(
                 context,
                 context.getPackageName() + ".provider",
@@ -99,7 +99,7 @@ public class PdfExportHelper {
         int x = 40;
         int y = 60;
 
-        // ── En-tête ───────────────────────────────────────────────
+
         canvas.drawText("OpenMinds — Rapport Statistiques", x, y, titreP);
         y += 20;
         canvas.drawLine(x, y, 555, y, lineP);
@@ -112,7 +112,7 @@ public class PdfExportHelper {
         canvas.drawLine(x, y, 555, y, lineP);
         y += 30;
 
-        // ── KPI Cards ─────────────────────────────────────────────
+
         canvas.drawText("Indicateurs clés", x, y, titreP);
         y += 25;
 
@@ -124,7 +124,7 @@ public class PdfExportHelper {
         canvas.drawLine(x, y, 555, y, lineP);
         y += 25;
 
-        // ── Participation par thématique ──────────────────────────
+
         canvas.drawText("Participation par thématique", x, y, titreP);
         y += 25;
 
@@ -137,7 +137,7 @@ public class PdfExportHelper {
                 int pct = maxInscrits > 0 ? (t.getNbInscrits() * 100 / maxInscrits) : 0;
                 canvas.drawText(t.getThematique(), x, y, corpsP);
 
-                // Barre de progression
+
                 Paint barBg = new Paint();
                 barBg.setColor(Color.parseColor("#E8EDF5"));
                 canvas.drawRect(x + 120, y - 12, x + 400, y, barBg);
@@ -154,7 +154,7 @@ public class PdfExportHelper {
         canvas.drawLine(x, y, 555, y, lineP);
         y += 25;
 
-        // ── Top formations ────────────────────────────────────────
+
         canvas.drawText("Formations les plus suivies", x, y, titreP);
         y += 25;
 
@@ -183,7 +183,7 @@ public class PdfExportHelper {
         canvas.drawText(label,  x, y + 35, corpsP);
     }
 
-    // NOUVELLE MÉTHODE POUR L'US07 : Générer l'attestation du Badge
+
     public static void exportAttestationPdf(Context context, String nomPrenom, String nomFormation, String dateObtention) {
         PdfDocument pdfDocument = new PdfDocument();
         PdfDocument.PageInfo pageInfo = new PdfDocument.PageInfo.Builder(595, 842, 1).create();
@@ -192,13 +192,13 @@ public class PdfExportHelper {
         Canvas canvas = page.getCanvas();
         Paint paint = new Paint();
 
-        // 1. Cadre de décoration
+
         paint.setStyle(Paint.Style.STROKE);
         paint.setStrokeWidth(10f);
         paint.setColor(Color.parseColor("#1ECFB8"));
         canvas.drawRect(30, 30, pageInfo.getPageWidth() - 30, pageInfo.getPageHeight() - 30, paint);
 
-        // 2. Titre
+
         paint.setStyle(Paint.Style.FILL);
         paint.setTextAlign(Paint.Align.CENTER);
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
@@ -206,31 +206,31 @@ public class PdfExportHelper {
         paint.setTextSize(36f);
         canvas.drawText("ATTESTATION DE RÉUSSITE", pageInfo.getPageWidth() / 2f, 150, paint);
 
-        // 3. Texte d'intro
+
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paint.setTextSize(18f);
         paint.setColor(Color.BLACK);
         canvas.drawText("Le réseau OpenMinds a l'honneur de décerner ce certificat à :", pageInfo.getPageWidth() / 2f, 250, paint);
 
-        // 4. Nom de l'utilisateur
+
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD_ITALIC));
         paint.setTextSize(32f);
         paint.setColor(Color.parseColor("#60A5FA"));
         canvas.drawText(nomPrenom, pageInfo.getPageWidth() / 2f, 320, paint);
 
-        // 5. Texte de validation
+
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paint.setTextSize(18f);
         paint.setColor(Color.BLACK);
         canvas.drawText("Pour avoir complété avec succès le parcours de formation :", pageInfo.getPageWidth() / 2f, 420, paint);
 
-        // 6. Nom de la formation
+
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.BOLD));
         paint.setTextSize(28f);
         paint.setColor(Color.parseColor("#1ECFB8"));
         canvas.drawText(nomFormation, pageInfo.getPageWidth() / 2f, 480, paint);
 
-        // 7. Date et Signature
+
         paint.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL));
         paint.setTextSize(14f);
         paint.setColor(Color.DKGRAY);
@@ -239,17 +239,17 @@ public class PdfExportHelper {
 
         pdfDocument.finishPage(page);
 
-        // --- SAUVEGARDE DANS LE DOSSIER DOWNLOADS ---
+
         String fileName = "Attestation_" + nomFormation.replaceAll("\\s+", "_") + ".pdf";
 
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                // Méthode moderne (Android 10 et +) : Utilisation de MediaStore
+
                 ContentResolver resolver = context.getContentResolver();
                 ContentValues contentValues = new ContentValues();
                 contentValues.put(MediaStore.MediaColumns.DISPLAY_NAME, fileName);
                 contentValues.put(MediaStore.MediaColumns.MIME_TYPE, "application/pdf");
-                // Indique à Android de le placer dans le dossier public Downloads
+
                 contentValues.put(MediaStore.MediaColumns.RELATIVE_PATH, Environment.DIRECTORY_DOWNLOADS);
 
                 Uri uri = resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, contentValues);
@@ -260,7 +260,7 @@ public class PdfExportHelper {
                     Toast.makeText(context, "Attestation enregistrée dans Téléchargements !", Toast.LENGTH_LONG).show();
                 }
             } else {
-                // Ancienne méthode (Android 9 et moins)
+
                 File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
                 File file = new File(downloadsDir, fileName);
                 FileOutputStream fos = new FileOutputStream(file);

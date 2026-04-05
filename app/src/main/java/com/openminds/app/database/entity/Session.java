@@ -28,7 +28,7 @@ public class Session {
     private String lienOnline;
     private int placesMax;
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()            { return id; }
     public int getFormationId()   { return formationId; }
     public String getType()       { return type; }
@@ -38,7 +38,7 @@ public class Session {
     public String getLienOnline() { return lienOnline; }
     public int getPlacesMax()     { return placesMax; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                   { this.id = id; }
     public void setFormationId(int formationId) { this.formationId = formationId; }
     public void setType(String type)            { this.type = type; }

@@ -28,11 +28,11 @@ public interface SessionDao {
     @Query("SELECT * FROM session WHERE id = :sessionId")
     LiveData<Session> getSessionById(int sessionId);
 
-    // Version synchrone (utilisée dans les threads background)
+
     @Query("SELECT * FROM session WHERE id = :sessionId LIMIT 1")
     Session getSessionByIdSync(int sessionId);
 
-    // Places restantes = placesMax - nombre d'inscrits
+
     @Query("SELECT s.placesMax - COUNT(i.id) " +
             "FROM session s LEFT JOIN inscription i ON i.sessionId = s.id " +
             "WHERE s.id = :sessionId GROUP BY s.id")

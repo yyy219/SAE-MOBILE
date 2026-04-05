@@ -25,15 +25,14 @@ public class StatistiquesViewModel extends AndroidViewModel {
     // Quand il change, TOUTES les LiveData se recalculent via switchMap
     private final MutableLiveData<Long> debutPeriode = new MutableLiveData<>();
 
-    // Label affiché sous le sélecteur ("Données du 1 au 28 février 2026")
+
     private final MutableLiveData<String> labelPeriode = new MutableLiveData<>();
 
-    // ── KPI Cards ────────────────────────────────────────────────
-    // Formations et sessions : totaux globaux (pas de filtre période)
+
     public final LiveData<Integer> nbFormations;
     public final LiveData<Integer> nbSessions;
 
-    // Filtrés par période via switchMap
+
     public final LiveData<Integer> nbBenevolesActifs;
     public final LiveData<Float>   tauxReussite;
     public final LiveData<List<StatThematique>> participationParThematique;
@@ -60,11 +59,11 @@ public class StatistiquesViewModel extends AndroidViewModel {
         topFormations = Transformations.switchMap(debutPeriode,
                 debut -> repository.getTopFormations(debut, 2));
 
-        // Période par défaut : ce mois
+
         setPeriodeMois();
     }
 
-    // ── Setters de période ────────────────────────────────────────
+
 
     public void setPeriode7Jours() {
         long debut = System.currentTimeMillis() - (7L * 24 * 60 * 60 * 1000);
@@ -96,13 +95,13 @@ public class StatistiquesViewModel extends AndroidViewModel {
 
     public LiveData<String> getLabelPeriode() { return labelPeriode; }
 
-    // Pour "Voir tout"
+
     public LiveData<List<FormationTop>> getTopFormationsComplet() {
         Long debut = debutPeriode.getValue();
         return repository.getTopFormations(debut != null ? debut : 0L, 100);
     }
 
-    // À ajouter avec les autres méthodes
+
     public LiveData<List<Formation>> getFormationsTerminees(int utilisateurId) {
         return repository.getFormationsTerminees(utilisateurId);
     }

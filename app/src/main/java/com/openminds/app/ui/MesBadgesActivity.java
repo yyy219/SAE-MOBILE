@@ -42,14 +42,14 @@
             tvEmptyBadges = findViewById(R.id.tvEmptyBadges);
             rvBadges.setLayoutManager(new LinearLayoutManager(this));
 
-            // 1. Initialiser la liste et l'action du PDF
+
             adapter = new BadgeAdapter(formation -> {
                 String dateDuJour = new SimpleDateFormat("dd MMM yyyy", Locale.FRANCE).format(new Date());
                 PdfExportHelper.exportAttestationPdf(this, nomCompletUtilisateur, formation.getTitre(), dateDuJour);
             });
             rvBadges.setAdapter(adapter);
 
-            // 2. Vérifier la Session Utilisateur
+
             SharedPreferences prefs = getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE);
             int userId = prefs.getInt("connected_user_id", -1);
 
@@ -62,21 +62,21 @@
             UtilisateurViewModel userVM = new ViewModelProvider(this).get(UtilisateurViewModel.class);
             StatistiquesViewModel statsVM = new ViewModelProvider(this).get(StatistiquesViewModel.class);
 
-            // 3. Récupérer le vrai nom pour l'écrire sur le PDF
+
             userVM.getUtilisateurById(userId).observe(this, u -> {
                 if (u != null) {
                     nomCompletUtilisateur = u.getPrenom() + " " + u.getNom();
                 }
             });
 
-            // 4. LE SYSTÈME : Récupérer uniquement les formations terminées via la base de données
+
             statsVM.getFormationsTerminees(userId).observe(this, badgesObtenus -> {
                 if (badgesObtenus != null) {
 
-                    // Mettre à jour l'Adapter avec les vrais badges
+
                     adapter.setFormations(badgesObtenus);
 
-                    // Gérer l'affichage (Texte vide ou Liste)
+
                     if (badgesObtenus.isEmpty()) {
                         tvEmptyBadges.setVisibility(View.VISIBLE);
                         rvBadges.setVisibility(View.GONE);
@@ -86,7 +86,7 @@
                     }
                 }
             });
-            // 5. Configurer les clics de la barre de navigation du bas
+
             setupBottomNavigation();
         }
 

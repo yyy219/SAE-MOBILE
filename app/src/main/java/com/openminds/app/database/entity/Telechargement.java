@@ -35,13 +35,13 @@ public class Telechargement {
     private int formationId;
     private String dateTelecharge;
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()                  { return id; }
     public int getUtilisateurId()       { return utilisateurId; }
     public int getFormationId()         { return formationId; }
     public String getDateTelecharge()   { return dateTelecharge; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                        { this.id = id; }
     public void setUtilisateurId(int utilisateurId)  { this.utilisateurId = utilisateurId; }
     public void setFormationId(int formationId)      { this.formationId = formationId; }

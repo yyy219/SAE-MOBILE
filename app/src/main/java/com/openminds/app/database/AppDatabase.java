@@ -62,7 +62,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     FormationDao formationDao = INSTANCE.formationDao();
                     ContenuDao contenuDao = INSTANCE.contenuDao();
 
-                    // ── Utilisateurs ──
+
                     Utilisateur admin = new Utilisateur();
                     admin.setNom("Admin");
                     admin.setPrenom("OpenMinds");
@@ -81,7 +81,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     benevole.setDateInscription(new java.util.Date().toString());
                     userDao.insert(benevole);
 
-                    // ── Formation 1 ──
+
                     Formation f1 = new Formation();
                     f1.setTitre("Formation au numérique");
                     f1.setDescription("Apprendre les bases du numérique");
@@ -114,7 +114,7 @@ public abstract class AppDatabase extends RoomDatabase {
                     f1m3.setOrdre(3);
                     contenuDao.insert(f1m3);
 
-                    // ── Formation 2 ──
+
                     Formation f2 = new Formation();
                     f2.setTitre("Introduction à l'inclusion");
                     f2.setDescription("Comprendre et promouvoir l'inclusion sociale");

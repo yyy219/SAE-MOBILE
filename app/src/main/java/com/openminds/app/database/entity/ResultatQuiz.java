@@ -39,7 +39,7 @@ public class ResultatQuiz {
 
     private long timestampPassage;
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()               { return id; }
     public int getUtilisateurId()    { return utilisateurId; }
     public int getContenuId()        { return contenuId; }
@@ -49,7 +49,7 @@ public class ResultatQuiz {
 
     public long getTimestampPassage() { return timestampPassage; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                      { this.id = id; }
     public void setUtilisateurId(int uid)          { this.utilisateurId = uid; }
     public void setContenuId(int contenuId)        { this.contenuId = contenuId; }

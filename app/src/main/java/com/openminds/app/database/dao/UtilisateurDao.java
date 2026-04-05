@@ -22,12 +22,12 @@ public interface UtilisateurDao {
     @Delete
     void delete(Utilisateur utilisateur);
 
-    // Utilisé pour la page Login : cherche par email + mot de passe
+
     @Query("SELECT * FROM utilisateur WHERE email = :email " +
             "AND motDePasse = :motDePasse LIMIT 1")
     Utilisateur login(String email, String motDePasse);
 
-    // Vérifie si un email est déjà utilisé lors de l'inscription
+
     @Query("SELECT COUNT(*) FROM utilisateur WHERE email = :email")
     int emailExiste(String email);
 
@@ -40,7 +40,7 @@ public interface UtilisateurDao {
     @Query("SELECT * FROM utilisateur WHERE id = :id")
     Utilisateur getById(int id);
 
-    // FIX #8 : version LiveData pour observer depuis l'UI (MonEspaceActivity)
+
     @Query("SELECT * FROM utilisateur WHERE id = :id")
     LiveData<Utilisateur> getUtilisateurById(int id);
 }

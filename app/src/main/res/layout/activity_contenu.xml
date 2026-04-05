@@ -8,7 +8,7 @@
     android:background="#F8F9FA"
     tools:context=".ContenuActivity">
 
-    <!-- 1. LA BARRE DU HAUT (Toolbar) -->
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- 2. LA ZONE DEFILANTE (Pour les petits écrans) -->
+    <
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -38,7 +38,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- EN-TÊTE : FORMATION SÉLECTIONNÉE -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="16dp"/>
 
-            <!-- EN-TÊTE : SESSION -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- CARTE DE LA SESSION (Design simplifié pour le POC) -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- LISTE DES MODULES -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp"/>
 
-            <!-- C'EST ICI QUE LES MODULES S'AFFICHERONT DYNAMIQUEMENT -->
+
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_modules"
                 android:layout_width="match_parent"
@@ -134,7 +134,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- 3. LE BOUTON FIXÉ EN BAS (Désactivé par défaut comme on l'a vu) -->
+
     <Button
         android:id="@+id/btn_valider_formation"
         android:layout_width="0dp"

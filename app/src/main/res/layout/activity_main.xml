@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- HEADER BLEU ADMIN -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             </LinearLayout>
         </LinearLayout>
 
-        <!-- KPIs -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- CORPS BLANC -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -110,7 +110,7 @@
                 android:textColor="#111827"
                 android:layout_marginBottom="12dp"/>
 
-            <!-- Créer une formation -->
+
             <LinearLayout
                 android:id="@+id/btnNouvelleFormation"
                 android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="22sp" android:textColor="#6B7280"/>
             </LinearLayout>
 
-            <!-- Statistiques -->
+
             <LinearLayout
                 android:id="@+id/btnStatistiques"
                 android:layout_width="match_parent"
@@ -170,7 +170,7 @@
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="22sp" android:textColor="#6B7280"/>
             </LinearLayout>
 
-            <!-- Gérer sessions -->
+
             <LinearLayout
                 android:id="@+id/btnChoisirSession"
                 android:layout_width="match_parent"
@@ -200,7 +200,7 @@
                 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="22sp" android:textColor="#6B7280"/>
             </LinearLayout>
 
-            <!-- Voir catalogue -->
+
             <LinearLayout
                 android:id="@+id/btnVoirCatalogue"
                 android:layout_width="match_parent"
