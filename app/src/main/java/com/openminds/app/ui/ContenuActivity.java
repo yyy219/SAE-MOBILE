@@ -39,6 +39,32 @@ public class ContenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contenu);
+        // 1. Création du récepteur qui attend le signal de retour de ModuleDetailActivity
+        androidx.activity.result.ActivityResultLauncher<Intent> moduleDetailLauncher =
+                registerForActivityResult(
+                        new androidx.activity.result.contract.ActivityResultContracts.StartActivityForResult(),
+                        result -> {
+                            // Quand on revient de la page, on vérifie si le signal est "RESULT_OK"
+                            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+
+                                // On récupère l'ID du module qui vient d'être lu
+                                int moduleIdValide = result.getData().getIntExtra("MODULE_VALIDE_ID", -1);
+
+                                if (moduleIdValide != -1) {
+                                    // C'EST ICI QU'ON VALIDE ENFIN LE MODULE !
+                                    modulesValides.add(moduleIdValide);
+                                    Toast.makeText(this, "✓ Module terminé !", Toast.LENGTH_SHORT).show();
+
+                                    // On vérifie si tous les modules sont maintenant validés
+                                    if (!tousLesModules.isEmpty() && modulesValides.containsAll(
+                                            tousLesModules.stream().map(Contenu::getId).collect(java.util.stream.Collectors.toSet()))) {
+                                        btnValider.setEnabled(true);
+                                        btnValider.setBackgroundTintList(
+                                                android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#2ECC71")));
+                                    }
+                                }
+                            }
+                        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -60,17 +86,12 @@ public class ContenuActivity extends AppCompatActivity {
 
         ArrayList<Contenu> liste = new ArrayList<>();
         ContenuAdapter adapter = new ContenuAdapter(liste, contenu -> {
-            // Clic sur un module → le marquer comme validé
-            modulesValides.add(contenu.getId());
-            Toast.makeText(this, "✓ " + contenu.getTitre() + " terminé !", Toast.LENGTH_SHORT).show();
 
-            // Vérifie si tous les modules sont validés
-            if (!tousLesModules.isEmpty() && modulesValides.containsAll(
-                    tousLesModules.stream().map(Contenu::getId).collect(java.util.stream.Collectors.toSet()))) {
-                btnValider.setEnabled(true);
-                btnValider.setBackgroundTintList(
-                        android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#2ECC71")));
-            }
+            // On lance JUSTE la page de lecture avec notre Launcher (Pas de validation immédiate)
+            Intent intent = new Intent(ContenuActivity.this, ModuleDetailActivity.class);
+            intent.putExtra("CONTENU_ID", contenu.getId());
+            moduleDetailLauncher.launch(intent);
+
         });
         recycler.setAdapter(adapter);
 

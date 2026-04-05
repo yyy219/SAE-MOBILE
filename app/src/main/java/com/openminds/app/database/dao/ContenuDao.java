@@ -35,5 +35,8 @@ public interface ContenuDao {
     @Query("SELECT * FROM contenu WHERE formationId = :formationId AND type = :type")
     LiveData<List<Contenu>> getContenusByType(int formationId, String type);
 
+    @Query("SELECT * FROM contenu WHERE id = :id")
+    LiveData<Contenu> getContenuById(int id);
+
     //LiveData permet mise a jour de la BD afficher sur l'ecran en temps reel sans que rafrachir (ex ajout/supression contenu)//
 }

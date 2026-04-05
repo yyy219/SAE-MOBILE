@@ -162,34 +162,67 @@ public class NouvelleFormationActivity extends AppCompatActivity {
 
     private void configurerBoutonAjoutModule() {
         btnAddModule.setOnClickListener(v -> {
-            View dialogView = getLayoutInflater().inflate(android.R.layout.activity_list_item, null);
-
+            // Création du champ pour le titre
             EditText etTitreModule = new EditText(this);
             etTitreModule.setHint("Titre du module");
-            EditText etContenu = new EditText(this);
-            etContenu.setHint("Contenu du module");
-            etContenu.setMinLines(3);
 
+            // Création du titre pour les options
+            TextView tvTypeLabel = new TextView(this);
+            tvTypeLabel.setText("Type de contenu :");
+            tvTypeLabel.setPadding(0, 32, 0, 16);
+            tvTypeLabel.setTypeface(null, android.graphics.Typeface.BOLD);
+
+            // Création des choix (Boutons Radio)
+            RadioGroup rgType = new RadioGroup(this);
+
+            android.widget.RadioButton rbTexte = new android.widget.RadioButton(this);
+            rbTexte.setId(View.generateViewId()); // <-- L'ID unique généré
+            rbTexte.setText("Texte (Lecture)");
+            rbTexte.setChecked(true); // Sélectionné par défaut
+
+            android.widget.RadioButton rbVideo = new android.widget.RadioButton(this);
+            rbVideo.setId(View.generateViewId()); // <-- L'ID unique généré
+            rbVideo.setText("Vidéo");
+
+            android.widget.RadioButton rbQuiz = new android.widget.RadioButton(this);
+            rbQuiz.setId(View.generateViewId()); // <-- L'ID unique généré
+            rbQuiz.setText("Quiz (QCM)");
+
+            rgType.addView(rbTexte);
+            rgType.addView(rbVideo);
+            rgType.addView(rbQuiz);
+
+            // Assemblage de la vue
             LinearLayout layout = new LinearLayout(this);
             layout.setOrientation(LinearLayout.VERTICAL);
             layout.setPadding(48, 24, 48, 24);
             layout.addView(etTitreModule);
-            layout.addView(etContenu);
+            layout.addView(tvTypeLabel);
+            layout.addView(rgType);
 
             new AlertDialog.Builder(this)
                     .setTitle("Ajouter un module")
                     .setView(layout)
                     .setPositiveButton("Ajouter", (dialog, which) -> {
                         String titre = etTitreModule.getText().toString().trim();
-                        String contenu = etContenu.getText().toString().trim();
+
                         if (titre.isEmpty()) {
                             Toast.makeText(this, "Le titre est obligatoire", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        // Déterminer le type choisi
+                        String typeChoisi = "texte";
+                        if (rbVideo.isChecked()) typeChoisi = "video";
+                        else if (rbQuiz.isChecked()) typeChoisi = "quiz";
+
                         Contenu module = new Contenu();
                         module.setTitre(titre);
-                        module.setContenuTexte(contenu);
-                        module.setType("texte");
+                        module.setType(typeChoisi);
+
+                        // On met un texte par défaut pour éviter que ce soit vide côté bénévole
+                        module.setContenuTexte("Contenu à définir par l'administrateur...");
+
                         modulesTemporaires.add(module);
                         afficherModuleDansListe(module);
                         mettreAJourCompteurModules();
@@ -223,7 +256,13 @@ public class NouvelleFormationActivity extends AppCompatActivity {
 
     private void afficherModuleDansListe(Contenu module) {
         TextView tv = new TextView(this);
-        tv.setText("📖 " + module.getTitre());
+
+        // Choix de l'icône selon le type
+        String icone = "📖 "; // Par défaut texte
+        if ("video".equals(module.getType())) icone = "▶️ ";
+        else if ("quiz".equals(module.getType())) icone = "❓ ";
+
+        tv.setText(icone + module.getTitre());
         tv.setPadding(16, 16, 16, 16);
         tv.setTextSize(14);
         tv.setOnLongClickListener(v -> {
