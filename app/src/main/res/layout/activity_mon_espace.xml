@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
 
-    <!-- HEADER BLEU -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:paddingTop="40dp"
         android:paddingBottom="16dp">
 
-        <!-- Topbar -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
 
         </LinearLayout>
 
-        <!-- Profil -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- CORPS SCROLLABLE -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -114,7 +114,7 @@
             android:orientation="vertical"
             android:padding="16dp">
 
-            <!-- Vue d'ensemble (commune admin + bénévole) -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -146,9 +146,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <!-- ══════════════════════════════════════════ -->
-            <!-- SECTION ADMIN (visible si role = admin)   -->
-            <!-- ══════════════════════════════════════════ -->
+
             <LinearLayout
                 android:id="@+id/sectionAdmin"
                 android:layout_width="match_parent"
@@ -165,7 +163,7 @@
                     android:textColor="#111827"
                     android:layout_marginBottom="10dp"/>
 
-                <!-- Bouton créer formation -->
+
                 <LinearLayout
                     android:id="@+id/btnAdminCreerFormation"
                     android:layout_width="match_parent"
@@ -181,7 +179,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="20sp" android:textColor="#6B7280"/>
                 </LinearLayout>
 
-                <!-- Bouton statistiques -->
+
                 <LinearLayout
                     android:id="@+id/btnAdminStatistiques"
                     android:layout_width="match_parent"
@@ -197,7 +195,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="20sp" android:textColor="#6B7280"/>
                 </LinearLayout>
 
-                <!-- Bouton gérer sessions -->
+
                 <LinearLayout
                     android:id="@+id/btnAdminSessions"
                     android:layout_width="match_parent"
@@ -213,7 +211,7 @@
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="›" android:textSize="20sp" android:textColor="#6B7280"/>
                 </LinearLayout>
 
-                <!-- Bouton déconnexion admin -->
+                >
                 <LinearLayout
                     android:id="@+id/btnDeconnexionAdmin"
                     android:layout_width="match_parent"
@@ -230,8 +228,7 @@
 
             </LinearLayout>
 
-            <!-- ══════════════════════════════════════════════ -->
-            <!-- SECTION BÉNÉVOLE (visible si role = benevole) -->
+
             <LinearLayout
                 android:id="@+id/sectionBenevole"
                 android:layout_width="match_parent"
@@ -239,13 +236,13 @@
                 android:orientation="vertical"
                 android:visibility="gone">
 
-                <!-- Header formations en cours -->
+
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_vertical" android:layout_marginBottom="10dp">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Formations en cours" android:textSize="13sp" android:textStyle="bold" android:textColor="#111827"/>
                     <TextView android:id="@+id/btnBenevoleVoirCatalogue" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Voir tout" android:textSize="11sp" android:textColor="#0AAEA0" android:clickable="true" android:focusable="true"/>
                 </LinearLayout>
 
-                <!-- Message si aucune inscription -->
+
                 <TextView
                     android:id="@+id/tvAucuneFormation"
                     android:layout_width="match_parent"
@@ -259,7 +256,7 @@
                     android:layout_marginBottom="12dp"
                     android:visibility="gone"/>
 
-                <!-- Conteneur dynamique formations -->
+
                 <LinearLayout
                     android:id="@+id/conteneurFormationsBenevole"
                     android:layout_width="match_parent"
@@ -267,13 +264,13 @@
                     android:orientation="vertical"
                     android:layout_marginBottom="4dp"/>
 
-                <!-- Bouton choisir session -->
+
                 <LinearLayout android:id="@+id/btnBenevoleChoisirSession" android:layout_width="match_parent" android:layout_height="56dp" android:orientation="horizontal" android:gravity="center_vertical" android:padding="14dp" android:background="@drawable/bg_surface_card_light" android:layout_marginBottom="22dp" android:clickable="true" android:focusable="true">
                     <TextView android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="Choisir une session" android:textSize="14sp" android:textStyle="bold" android:textColor="#3A80F0"/>
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="&#8250;" android:textSize="20sp" android:textColor="#6B7280"/>
                 </LinearLayout>
 
-                <!-- Section badges dynamiques -->
+
                 <LinearLayout
                     android:id="@+id/sectionBadgesBenevole"
                     android:layout_width="match_parent"
@@ -291,7 +288,7 @@
                         android:layout_marginBottom="16dp"/>
                 </LinearLayout>
 
-                <!-- Bouton déconnexion -->
+
                 <LinearLayout android:id="@+id/btnDeconnexionBenevole" android:layout_width="match_parent" android:layout_height="50dp" android:orientation="horizontal" android:gravity="center" android:background="@drawable/bg_bouton_outline_light" android:layout_marginTop="8dp" android:layout_marginBottom="8dp" android:clickable="true" android:focusable="true">
                     <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Se d&#233;connecter" android:textSize="14sp" android:textStyle="bold" android:textColor="#EF4444"/>
                 </LinearLayout>
@@ -300,7 +297,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- BOTTOM NAV — 3 onglets bénévole : Catalogue, Mon espace, Badges -->
+
     <LinearLayout
         android:id="@+id/bottomNavbar"
         android:layout_width="match_parent"

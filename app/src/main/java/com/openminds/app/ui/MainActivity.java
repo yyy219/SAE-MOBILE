@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
         SharedPreferences prefs = getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE);
 
-        // KPIs dynamiques via StatistiquesViewModel
+
         StatistiquesViewModel statsVm = new ViewModelProvider(this).get(StatistiquesViewModel.class);
 
         TextView tvFormations = findViewById(R.id.tvAdminNbFormations);
@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                 tvTaux.setText(taux != null ? Math.round(taux) + "%" : "—");
         });
 
-        // Navigation
+
         findViewById(R.id.btnNouvelleFormation).setOnClickListener(v ->
                 startActivity(new Intent(this, NouvelleFormationActivity.class)));
 
@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.btnVoirCatalogue).setOnClickListener(v ->
                 startActivity(new Intent(this, CatalogueFormationsActivity.class)));
 
-        // Déconnexion
+
         findViewById(R.id.btnDeconnexionMain).setOnClickListener(v -> {
             prefs.edit().clear().apply();
             Toast.makeText(this, "Déconnexion réussie", Toast.LENGTH_SHORT).show();

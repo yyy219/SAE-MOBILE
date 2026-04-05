@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SAE">
 
-        <!-- LAUNCHER : Connexion en premier -->
+
         <activity
             android:name="com.openminds.app.ui.ConnexionActivity"
             android:exported="true"
@@ -42,14 +42,15 @@
 
         <activity android:name="com.openminds.app.ui.ContenuActivity" />
 
-        <activity android:name="com.openminds.app.ui.ModuleDetailActivity" />
+        <activity android:name="com.openminds.app.ui.ModuleDetailActivity"
+            tools:ignore="Instantiatable" />
 
         <activity android:name="com.openminds.app.ui.MesBadgesActivity" android:exported="false" />
 
         <activity android:name="com.openminds.app.ui.StatistiquesActivity" />
         <activity android:name="com.openminds.app.ui.MesformationsActivity" />
 
-        <!-- FileProvider pour export PDF -->
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

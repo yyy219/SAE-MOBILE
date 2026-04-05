@@ -84,17 +84,17 @@ public class FormationFragment extends Fragment {
         repo.getAllFormations().observe(getViewLifecycleOwner(), formationsBDD -> {
 
             if (formationsBDD != null) {
-                // On met à jour nos listes
+
                 formationListFull.clear();
                 formationListFull.addAll(formationsBDD);
 
                 formationList.clear();
                 formationList.addAll(formationListFull);
 
-                // On rafraîchit l'écran
+
                 adapter.notifyDataSetChanged();
 
-                // Le .isEmpty() marchera parfaitement ici car formationsBDD est une vraie List Java
+
                 if (formationsBDD.isEmpty()) {
                     Log.d("BDD_TEST", "La base de données de Bassirou est vide pour le moment.");
                 }

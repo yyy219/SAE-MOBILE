@@ -29,7 +29,7 @@ public class FormationActivity extends AppCompatActivity {
         navigationView.setNavigationItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.nav_formations) {
-                // On est déjà dessus
+
             } else if (id == R.id.nav_profil) {
                 Toast.makeText(this, "Module Profil bientôt disponible", Toast.LENGTH_SHORT).show();
             } else if (id == R.id.nav_progression) {

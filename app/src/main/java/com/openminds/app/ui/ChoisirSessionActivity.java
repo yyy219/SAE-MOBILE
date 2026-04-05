@@ -117,7 +117,7 @@ public class ChoisirSessionActivity extends AppCompatActivity {
                         return;
                     }
 
-                    // Inscription en BD
+
                     viewModel.inscrire(utilisateurId, session.getId());
                 })
                 .setNegativeButton("Annuler", null)

@@ -60,11 +60,11 @@ public class ContenuActivity extends AppCompatActivity {
 
         ArrayList<Contenu> liste = new ArrayList<>();
         ContenuAdapter adapter = new ContenuAdapter(liste, contenu -> {
-            // Clic sur un module → le marquer comme validé
+
             modulesValides.add(contenu.getId());
             Toast.makeText(this, "✓ " + contenu.getTitre() + " terminé !", Toast.LENGTH_SHORT).show();
 
-            // Vérifie si tous les modules sont validés
+
             if (!tousLesModules.isEmpty() && modulesValides.containsAll(
                     tousLesModules.stream().map(Contenu::getId).collect(java.util.stream.Collectors.toSet()))) {
                 btnValider.setEnabled(true);
@@ -100,7 +100,7 @@ public class ContenuActivity extends AppCompatActivity {
         if (currentUserId == -1 || formationId == -1) return;
 
         Executors.newSingleThreadExecutor().execute(() -> {
-            // Récupère la première session de la formation
+
             List<com.openminds.app.database.entity.Session> sessions =
                     db.sessionDao().getSessionsByFormationSync(formationId);
 
@@ -112,7 +112,7 @@ public class ContenuActivity extends AppCompatActivity {
 
             int sessionId = sessions.get(0).getId();
 
-            // Vérifie si déjà inscrit
+
             int dejaInscrit = db.inscriptionDao().isDejaInscrit(currentUserId, sessionId);
             if (dejaInscrit > 0) {
                 runOnUiThread(() -> Toast.makeText(this,
@@ -120,7 +120,7 @@ public class ContenuActivity extends AppCompatActivity {
                 return;
             }
 
-            // Crée l'inscription
+
             Inscription inscription = new Inscription();
             inscription.setUtilisateurId(currentUserId);
             inscription.setSessionId(sessionId);

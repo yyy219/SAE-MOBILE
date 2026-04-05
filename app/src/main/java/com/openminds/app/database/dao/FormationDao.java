@@ -34,7 +34,7 @@ public interface FormationDao {
     @Query("SELECT * FROM formation WHERE id IN (:ids)")
     LiveData<List<Formation>> getFormationsByIds(List<Integer> ids);
 
-    // Formations auxquelles un bénévole est inscrit (jointure inscription→session→formation)
+
     @Query("SELECT DISTINCT f.* FROM formation f " +
             "INNER JOIN session s ON s.formationId = f.id " +
             "INNER JOIN inscription i ON i.sessionId = s.id " +

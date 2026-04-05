@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <!-- ScrollView pour que le long texte du cours puisse défiler -->
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Fausse vidéo pour faire pro -->
+
             <ImageView
                 android:id="@+id/iv_detail_media"
                 android:layout_width="match_parent"
@@ -34,7 +34,7 @@
                 android:orientation="vertical"
                 android:padding="24dp">
 
-                <!-- Titre du module -->
+
                 <TextView
                     android:id="@+id/tv_detail_titre"
                     android:layout_width="match_parent"
@@ -45,7 +45,7 @@
                     android:textStyle="bold"
                     android:layout_marginBottom="16dp" />
 
-                <!-- Texte du cours (Il s'agrandira tout seul) -->
+
                 <TextView
                     android:id="@+id/tv_detail_texte"
                     android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Bouton d'action fixé en bas -->
+
     <Button
         android:id="@+id/btn_detail_action"
         android:layout_width="match_parent"

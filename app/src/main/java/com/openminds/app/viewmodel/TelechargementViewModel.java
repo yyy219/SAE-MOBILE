@@ -29,7 +29,7 @@ public class TelechargementViewModel extends AndroidViewModel {
     }
 
 
-    // ✅ Nouvelle méthode : retourne les IDs sous forme LiveData (safe main thread)
+
     public LiveData<List<Integer>> getFormationIdsTelechargeesLive(int userId) {
         return repository.getFormationIdsTelechargeesLive(userId);
     }

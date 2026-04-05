@@ -16,7 +16,7 @@ public class Utilisateur {
     private String role;
     private String dateInscription;
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()                  { return id; }
     public String getNom()              { return nom; }
     public String getPrenom()           { return prenom; }
@@ -25,7 +25,7 @@ public class Utilisateur {
     public String getRole()             { return role; }
     public String getDateInscription()  { return dateInscription; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                          { this.id = id; }
     public void setNom(String nom)                     { this.nom = nom; }
     public void setPrenom(String prenom)               { this.prenom = prenom; }

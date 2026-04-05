@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:background="#F5F5F5">
 
-    <!-- HEADER -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,13 +37,13 @@
             android:textStyle="bold"
             android:gravity="center" />
 
-        <!-- Spacer symétrique pour centrer le titre -->
+
         <View
             android:layout_width="40dp"
             android:layout_height="40dp" />
     </LinearLayout>
 
-    <!-- Bandeau informatif -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
             android:textSize="13sp" />
     </LinearLayout>
 
-    <!-- État vide : affiché si aucune formation téléchargée -->
+
     <LinearLayout
         android:id="@+id/layoutVide"
         android:layout_width="match_parent"
@@ -102,7 +102,7 @@
             android:gravity="center" />
     </LinearLayout>
 
-    <!-- Liste des formations téléchargées -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerHorsLigne"
         android:layout_width="match_parent"

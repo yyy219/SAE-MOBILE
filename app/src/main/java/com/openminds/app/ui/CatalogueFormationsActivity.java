@@ -33,7 +33,7 @@ public class CatalogueFormationsActivity extends AppCompatActivity {
         currentUserId = getSharedPreferences("OpenMindsPrefs", MODE_PRIVATE)
                 .getInt("connected_user_id", -1);
 
-        // Bouton pour aller vers l'historique des formations téléchargées hors-ligne
+
         findViewById(R.id.btnMesFormations).setOnClickListener(v ->
                 startActivity(new Intent(this, MesformationsActivity.class)));
 
@@ -78,11 +78,11 @@ public class CatalogueFormationsActivity extends AppCompatActivity {
                     adapter.setFormationsTelechargees(set);
                 });
 
-        // Initialisation de la barre de navigation du bas
+
         setupBottomNavigation();
     }
 
-    // NOUVEAU : Méthode pour gérer les clics sur les onglets
+
     private void setupBottomNavigation() {
         View navMonEspace = findViewById(R.id.navMonEspace);
         View navBadges = findViewById(R.id.navBadges);
@@ -90,16 +90,16 @@ public class CatalogueFormationsActivity extends AppCompatActivity {
         if (navMonEspace != null) {
             navMonEspace.setOnClickListener(v -> {
                 startActivity(new Intent(this, MonEspaceActivity.class));
-                finish(); // On ferme le catalogue pour libérer la mémoire
+                finish();
             });
         }
 
         if (navBadges != null) {
             navBadges.setOnClickListener(v -> {
                 startActivity(new Intent(this, MesBadgesActivity.class));
-                finish(); // On ferme le catalogue pour libérer la mémoire
+                finish();
             });
         }
-        // Pas d'écouteur sur navCatalogue, car on est déjà sur cette page !
+
     }
 }

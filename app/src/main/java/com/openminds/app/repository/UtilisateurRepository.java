@@ -21,7 +21,7 @@ public class UtilisateurRepository {
     private final InscriptionDao inscriptionDao;
     private final TelechargementDao telechargementDao;
 
-    // Thread séparé pour toutes les opérations d'écriture
+
     private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public UtilisateurRepository(Application application) {
@@ -31,15 +31,14 @@ public class UtilisateurRepository {
         telechargementDao = db.telechargementDao();
     }
 
-    // ── Utilisateur ──────────────────────────────────────
 
-    // Inscription d'un nouvel utilisateur (US01)
+
+
     public void inscrireUtilisateur(Utilisateur utilisateur) {
         executor.execute(() -> utilisateurDao.insert(utilisateur));
     }
 
-    // Connexion : retourne l'utilisateur si email+mdp correct (US01)
-    // Callback car Room interdit le résultat direct sur thread principal
+
     public interface LoginCallback {
         void onResult(Utilisateur utilisateur);
     }
@@ -51,7 +50,7 @@ public class UtilisateurRepository {
         });
     }
 
-    // Vérifie si l'email existe déjà avant inscription
+
     public interface EmailCallback {
         void onResult(boolean existe);
     }
@@ -67,7 +66,7 @@ public class UtilisateurRepository {
         executor.execute(() -> utilisateurDao.update(utilisateur));
     }
 
-    // FIX #7 : méthode manquante pour MonEspaceActivity
+
     public LiveData<Utilisateur> getUtilisateurById(int id) {
         return utilisateurDao.getUtilisateurById(id);
     }
@@ -80,9 +79,9 @@ public class UtilisateurRepository {
         return utilisateurDao.getBenevoles();
     }
 
-    // ── Inscription à une session ─────────────────────────
 
-    // S'inscrire à une session (US03)
+
+
     public void inscrireSession(Inscription inscription) {
         executor.execute(() -> inscriptionDao.insert(inscription));
     }
@@ -103,14 +102,14 @@ public class UtilisateurRepository {
         });
     }
 
-    // ── Téléchargements ───────────────────────────────────
 
-    // Télécharger une formation offline (US05)
+
+
     public void telechargerFormation(Telechargement t) {
         executor.execute(() -> telechargementDao.insert(t));
     }
 
-    // Supprimer un téléchargement
+
     public void supprimerTelechargement(int uid, int fid) {
         executor.execute(() -> telechargementDao.deleteByUserAndFormation(uid, fid));
     }
@@ -119,7 +118,7 @@ public class UtilisateurRepository {
         return telechargementDao.getTelechargementsByUtilisateur(utilisateurId);
     }
 
-    // Vérifie si déjà téléchargé (pour changer le bouton download)
+
     public interface TelechargementCallback {
         void onResult(boolean dejaTelechargee);
     }

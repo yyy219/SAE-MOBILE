@@ -102,7 +102,7 @@
 
                     </LinearLayout>
 
-                    <!-- Label période dynamique -->
+
                     <TextView
                         android:id="@+id/tvLabelPeriode"
                         android:layout_width="match_parent"
@@ -116,7 +116,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- ── Ligne 1 : Formations + Bénévoles ── -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -206,7 +206,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- ── Ligne 2 : Taux de réussite + Sessions ── -->
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -296,7 +296,7 @@
                 </androidx.cardview.widget.CardView>
             </LinearLayout>
 
-            <!-- ── Participation par thématique ── -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -320,7 +320,7 @@
                         android:letterSpacing="0.08"
                         android:layout_marginBottom="12dp" />
 
-                    <!-- Inclusion -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -368,7 +368,7 @@
                             android:progressBackgroundTint="#E8EDF5" />
                     </LinearLayout>
 
-                    <!-- Environnement -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -416,7 +416,7 @@
                             android:progressBackgroundTint="#E8EDF5" />
                     </LinearLayout>
 
-                    <!-- Égalité -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -467,7 +467,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- ── Top formations ── -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -508,7 +508,7 @@
                             android:textStyle="bold" />
                     </LinearLayout>
 
-                    <!-- Formation #1 -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -558,7 +558,7 @@
                         android:background="#F0F0F0"
                         android:layout_marginBottom="8dp" />
 
-                    <!-- Formation #2 -->
+
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="48dp"
@@ -604,7 +604,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- ── Bouton export PDF ── -->
+
             <Button
                 android:id="@+id/btnExporterPdf"
                 android:layout_width="match_parent"

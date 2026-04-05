@@ -10,13 +10,13 @@
     app:cardElevation="2dp"
     app:cardBackgroundColor="@android:color/white">
 
-    <!-- Le ConstraintLayout permet d'aligner parfaitement les 3 blocs (Icône - Textes - Flèche) -->
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp">
 
-        <!-- 1. L'ICÔNE DU MODULE (À gauche) -->
+
         <ImageView
             android:id="@+id/iv_module_icon"
             android:layout_width="48dp"
@@ -25,9 +25,9 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
-        <!-- Note : J'ai mis un fond gris temporaire. Tu pourras utiliser 'android:src="@drawable/ton_icone"' plus tard -->
 
-        <!-- 2. LES TEXTES (Au centre) -->
+
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -60,8 +60,7 @@
                 android:layout_marginTop="4dp" />
         </LinearLayout>
 
-        <!-- 3. LA FLÈCHE (À droite) -->
-        <!-- J'utilise un TextView avec le symbole ">" pour que ça marche direct sans erreur de ressource manquante -->
+
         <TextView
             android:id="@+id/tv_module_arrow"
             android:layout_width="wrap_content"

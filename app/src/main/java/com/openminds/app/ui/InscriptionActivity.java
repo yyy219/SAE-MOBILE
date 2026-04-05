@@ -31,7 +31,7 @@ public class InscriptionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inscription);
 
-        // Tab Connexion → retour
+
         TextView tabConnexion = findViewById(R.id.tabConnexion);
         if (tabConnexion != null) tabConnexion.setOnClickListener(v -> finish());
 
@@ -52,7 +52,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
         utilisateurViewModel = new ViewModelProvider(this).get(UtilisateurViewModel.class);
 
-        // Barre de force du mot de passe
+
         if (etPassword != null) {
             etPassword.addTextChangedListener(new TextWatcher() {
                 @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -64,7 +64,7 @@ public class InscriptionActivity extends AppCompatActivity {
             });
         }
 
-        // Observer résultat inscription
+
         utilisateurViewModel.getEmailDejaUtilise().observe(this, dejaUtilise -> {
             if (dejaUtilise == null) return;
             if (dejaUtilise) {
@@ -72,7 +72,7 @@ public class InscriptionActivity extends AppCompatActivity {
                 Toast.makeText(this, "Cet email est déjà utilisé", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Compte créé ! Connectez-vous", Toast.LENGTH_SHORT).show();
-                // Retour à la connexion avec email prérempli
+
                 Intent intent = new Intent(this, ConnexionActivity.class);
                 String email = etEmail != null ? etEmail.getText().toString().trim() : "";
                 intent.putExtra("email_prefill", email);
@@ -81,7 +81,7 @@ public class InscriptionActivity extends AppCompatActivity {
             }
         });
 
-        // Bouton créer compte
+
         btnInscrire.setOnClickListener(v -> {
             String nom      = etNom.getText().toString().trim();
             String prenom   = etPrenom.getText().toString().trim();
@@ -89,27 +89,27 @@ public class InscriptionActivity extends AppCompatActivity {
             String password = etPassword.getText().toString().trim();
             String confirm  = etConfirm != null ? etConfirm.getText().toString().trim() : password;
 
-            // Champs vides
+
             if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty() || password.isEmpty()) {
                 Toast.makeText(this, "Veuillez remplir tous les champs", Toast.LENGTH_SHORT).show();
                 return;
             }
 
-            // Format email
+
             if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 etEmail.setError("Email invalide");
                 etEmail.requestFocus();
                 return;
             }
 
-            // Longueur mdp
+
             if (password.length() < 6) {
                 etPassword.setError("Minimum 6 caractères");
                 etPassword.requestFocus();
                 return;
             }
 
-            // Confirmation mdp
+
             if (!password.equals(confirm)) {
                 if (etConfirm != null) etConfirm.setError("Les mots de passe ne correspondent pas");
                 Toast.makeText(this, "Les mots de passe ne correspondent pas", Toast.LENGTH_SHORT).show();
@@ -128,18 +128,18 @@ public class InscriptionActivity extends AppCompatActivity {
         });
     }
 
-    // Colore les segments selon la force du mot de passe
+
     private void mettreAJourBarreForce(String mdp) {
         View[] segs = {seg1, seg2, seg3, seg4};
 
-        // Si vide → tout gris
+
         if (mdp.isEmpty()) {
             for (View s : segs)
                 if (s != null) s.setBackgroundColor(Color.parseColor("#E5E7EB"));
             return;
         }
 
-        // Calcul score 1-4
+
         int score = 0;
         if (mdp.length() >= 4)  score++;
         if (mdp.length() >= 8)  score++;
@@ -147,7 +147,7 @@ public class InscriptionActivity extends AppCompatActivity {
         if (mdp.matches(".*[!@#$%^&*()_+=].*")) score++;
         if (score == 0) score = 1; // au moins 1 segment rouge si quelque chose est tapé
 
-        // Couleur selon score
+
         int couleurActive;
         if (score == 1)      couleurActive = Color.parseColor("#EF4444"); // rouge
         else if (score == 2) couleurActive = Color.parseColor("#F97316"); // orange

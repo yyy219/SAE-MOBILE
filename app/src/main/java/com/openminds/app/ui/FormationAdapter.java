@@ -36,8 +36,7 @@ public class FormationAdapter extends ArrayAdapter<Formation> {
         TextView themeTV = layout.findViewById(R.id.tv_formation_theme);
         TextView descTV = layout.findViewById(R.id.tv_formation_desc);
 
-        // Attention: Si Bassirou a nommé ses getters différemment (ex: getNom() au lieu de getTitre()),
-        // il faudra juste adapter ces 3 lignes.
+
         titreTV.setText(formation.getTitre());
         themeTV.setText(formation.getThematique());
         descTV.setText(formation.getDescription());

@@ -17,13 +17,13 @@ public class UtilisateurViewModel extends AndroidViewModel {
 
     private final UtilisateurRepository repository;
 
-    // LiveData pour l'utilisateur connecté — observée par l'UI
+
     private final MutableLiveData<Utilisateur> utilisateurConnecte = new MutableLiveData<>();
 
-    // LiveData pour le résultat du login (true = succès, false = échec)
+
     private final MutableLiveData<Boolean> loginResultat = new MutableLiveData<>();
 
-    // LiveData pour savoir si l'email existe déjà
+
     private final MutableLiveData<Boolean> emailDejaUtilise = new MutableLiveData<>();
 
     public UtilisateurViewModel(@NonNull Application application) {
@@ -31,7 +31,7 @@ public class UtilisateurViewModel extends AndroidViewModel {
         repository = new UtilisateurRepository(application);
     }
 
-    // ── Getters LiveData (observés par l'Activity) ────────
+
 
     public LiveData<Utilisateur> getUtilisateurConnecte() {
         return utilisateurConnecte;
@@ -45,9 +45,9 @@ public class UtilisateurViewModel extends AndroidViewModel {
         return emailDejaUtilise;
     }
 
-    // ── Actions appelées depuis l'Activity ────────────────
 
-    // Tentative de connexion (US01)
+
+
     public void login(String email, String motDePasse) {
         repository.login(email, motDePasse, utilisateur -> {
             utilisateurConnecte.postValue(utilisateur);
@@ -55,7 +55,7 @@ public class UtilisateurViewModel extends AndroidViewModel {
         });
     }
 
-    // Créer un compte (US01)
+
     public void creerCompte(Utilisateur utilisateur) {
         // Vérifie d'abord si l'email est libre
         repository.emailExiste(utilisateur.getEmail(), existe -> {
@@ -68,7 +68,7 @@ public class UtilisateurViewModel extends AndroidViewModel {
         });
     }
 
-    // FIX #6 : méthode manquante appelée par MonEspaceActivity
+
     public LiveData<Utilisateur> getUtilisateurById(int id) {
         return repository.getUtilisateurById(id);
     }
@@ -85,25 +85,25 @@ public class UtilisateurViewModel extends AndroidViewModel {
         return repository.getBenevoles();
     }
 
-    // ── Inscriptions sessions (US03) ──────────────────────
+
 
     public void sInscrireSession(int utilisateurId, int sessionId) {
         repository.isDejaInscrit(utilisateurId, sessionId, dejaInscrit -> {
             if (!dejaInscrit) {
                 Inscription inscription = new Inscription();
 
-                // On utilise les SETTERS pour modifier les valeurs privées
+
                 inscription.setUtilisateurId(utilisateurId);
                 inscription.setSessionId(sessionId);
 
-                // Correction : on utilise setDateInscription (ou le nom de votre champ date)
+
                 inscription.setDateInscription(new java.util.Date().toString());
                 inscription.setTimestampInscription(System.currentTimeMillis());
 
                 inscription.setStatut("inscrit");
                 inscription.setProgressionPourcentage(0);
 
-                // On envoie l'objet complet au repository pour l'insertion
+
                 repository.inscrireSession(inscription);
             }
         });
@@ -113,7 +113,7 @@ public class UtilisateurViewModel extends AndroidViewModel {
         return repository.getMesInscriptions(utilisateurId);
     }
 
-    // ── Téléchargements (US05) ────────────────────────────
+
 
     public void telechargerFormation(int utilisateurId, int formationId) {
         repository.isDejaTelechargee(utilisateurId, formationId, deja -> {

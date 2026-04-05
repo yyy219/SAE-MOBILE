@@ -40,7 +40,7 @@ public class Inscription {
 
     private long timestampInscription; // millisecondes — pour le filtrage par période
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()                      { return id; }
     public int getUtilisateurId()           { return utilisateurId; }
     public int getSessionId()               { return sessionId; }
@@ -50,7 +50,7 @@ public class Inscription {
 
     public long getTimestampInscription() { return timestampInscription; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                              { this.id = id; }
     public void setUtilisateurId(int utilisateurId)        { this.utilisateurId = utilisateurId; }
     public void setSessionId(int sessionId)                { this.sessionId = sessionId; }

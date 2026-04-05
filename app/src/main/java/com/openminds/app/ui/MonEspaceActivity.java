@@ -91,7 +91,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         });
 
 
-        // Navbar 3 onglets bénévole
+
         View navCatalogue = findViewById(R.id.navCatalogue);
         View navBadges    = findViewById(R.id.navBadges); // AJOUTE CECI
 
@@ -104,13 +104,13 @@ public class MonEspaceActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // Rafraîchit les données à chaque retour sur la page
+
         if (currentUserId != -1 && conteneurFormations != null) {
             conteneurFormations.removeAllViews();
         }
     }
 
-    // ─── STATS ADMIN ─────────────────────────────────────────────────────────
+
 
     private void chargerStatsAdmin() {
         statistiquesViewModel.nbFormations.observe(this, nb -> {
@@ -142,11 +142,11 @@ public class MonEspaceActivity extends AppCompatActivity {
                     getSharedPreferences("OpenMindsPrefs", Context.MODE_PRIVATE)));
     }
 
-    // ─── DONNÉES BÉNÉVOLE ─────────────────────────────────────────────────────
+
 
     private void chargerDonneesBenevole(SharedPreferences prefs) {
 
-        // 1. Stats vue d'ensemble depuis les inscriptions
+
         utilisateurViewModel.getMesInscriptions(currentUserId).observe(this, inscriptions -> {
             if (inscriptions == null) return;
 
@@ -169,10 +169,10 @@ public class MonEspaceActivity extends AppCompatActivity {
             }
         });
 
-        // 2. Formations en cours — depuis la jointure BD (réelles)
+
         formationViewModel.getFormationsInscrites(currentUserId).observe(this, formations -> {
 
-            // Récupérer le conteneur dynamique
+
             conteneurFormations = findViewById(R.id.conteneurFormationsBenevole);
             if (conteneurFormations == null) return;
             conteneurFormations.removeAllViews();
@@ -186,7 +186,7 @@ public class MonEspaceActivity extends AppCompatActivity {
             }
             if (tvAucune != null) tvAucune.setVisibility(View.GONE);
 
-            // Croiser avec les inscriptions pour avoir la progression
+
             utilisateurViewModel.getMesInscriptions(currentUserId).observe(this, inscriptions -> {
                 if (inscriptions == null) return;
                 conteneurFormations.removeAllViews();
@@ -200,12 +200,12 @@ public class MonEspaceActivity extends AppCompatActivity {
                     ajouterCarteFormation(f, progression);
                 }
 
-                // Badges dynamiques sous les formations
+
                 afficherBadgesDynamiques(formations, inscriptions);
             });
         });
 
-        // 3. Boutons
+
         View btnCatalogue = findViewById(R.id.btnBenevoleVoirCatalogue);
         View btnSession   = findViewById(R.id.btnBenevoleChoisirSession);
         View btnDecoBenv  = findViewById(R.id.btnDeconnexionBenevole);
@@ -220,7 +220,7 @@ public class MonEspaceActivity extends AppCompatActivity {
             btnDecoBenv.setOnClickListener(v -> deconnexion(prefs));
     }
 
-    // ─── CARTE FORMATION DYNAMIQUE ────────────────────────────────────────────
+
 
     private void ajouterCarteFormation(Formation f, int progression) {
         LinearLayout carte = new LinearLayout(this);
@@ -233,7 +233,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         lp.bottomMargin = dp(8);
         carte.setLayoutParams(lp);
 
-        // Chip thématique
+
         TextView chip = new TextView(this);
         chip.setText(capitaliser(f.getThematique()));
         chip.setTextSize(10f);
@@ -247,7 +247,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         chip.setLayoutParams(chipLp);
         carte.addView(chip);
 
-        // Ligne titre + %
+
         LinearLayout ligne = new LinearLayout(this);
         ligne.setOrientation(LinearLayout.HORIZONTAL);
         ligne.setGravity(android.view.Gravity.CENTER_VERTICAL);
@@ -289,7 +289,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         ligne.addView(tvPct);
         carte.addView(ligne);
 
-        // ProgressBar
+
         ProgressBar pb = new ProgressBar(this, null, android.R.attr.progressBarStyleHorizontal);
         pb.setMax(100);
         pb.setProgress(progression);
@@ -302,7 +302,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         conteneurFormations.addView(carte);
     }
 
-    // ─── BADGES DYNAMIQUES ────────────────────────────────────────────────────
+
 
     private void afficherBadgesDynamiques(List<Formation> formations, List<Inscription> inscriptions) {
         LinearLayout conteneurBadges = findViewById(R.id.conteneurBadgesBenevole);
@@ -357,7 +357,7 @@ public class MonEspaceActivity extends AppCompatActivity {
         conteneur.addView(badge);
     }
 
-    // ─── UTILITAIRES ──────────────────────────────────────────────────────────
+
 
     private int dp(int val) {
         return Math.round(val * getResources().getDisplayMetrics().density);

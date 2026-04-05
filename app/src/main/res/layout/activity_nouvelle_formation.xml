@@ -47,7 +47,7 @@
             android:orientation="vertical"
             android:padding="@dimen/margin_screen">
 
-            <!-- INFORMATIONS GÉNÉRALES -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -129,7 +129,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- THÉMATIQUE -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -216,7 +216,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- SESSIONS -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -273,7 +273,7 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
-            <!-- MODULES -->
+
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

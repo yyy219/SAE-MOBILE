@@ -15,7 +15,7 @@ public class Formation {
     private int dureeMinutes;
     private String dateCreation;
 
-    // ── Getters ──────────────────────────────────────
+
     public int getId()               { return id; }
     public String getTitre()         { return titre; }
     public String getDescription()   { return description; }
@@ -23,7 +23,7 @@ public class Formation {
     public int getDureeMinutes()     { return dureeMinutes; }
     public String getDateCreation()  { return dateCreation; }
 
-    // ── Setters ──────────────────────────────────────
+
     public void setId(int id)                      { this.id = id; }
     public void setTitre(String titre)             { this.titre = titre; }
     public void setDescription(String description) { this.description = description; }

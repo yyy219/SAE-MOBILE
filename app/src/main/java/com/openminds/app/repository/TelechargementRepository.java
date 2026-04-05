@@ -47,13 +47,13 @@ public class TelechargementRepository {
         );
     }
 
-    // ✅ CORRECTION : version LiveData pour éviter l'appel synchrone sur le main thread
+
     public LiveData<List<Integer>> getFormationIdsTelechargeesLive(int userId) {
         return telechargementDao.getFormationIdsTelechargeesLive(userId);
     }
 
 
-    // ⚠️ Cette méthode ne doit être appelée QUE depuis un thread background
+
     public boolean isDejaTelechargeeBackground(int userId, int formationId) {
         return telechargementDao.isDejaTelechargee(userId, formationId) > 0;
     }
